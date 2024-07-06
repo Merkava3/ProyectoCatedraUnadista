@@ -1,0 +1,146 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family: "Montserrat", sans-serif;
+    background: #00F260;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #0575E6, #00F260);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #0575E6, #00F260); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.containter-login{ 
+    background: #fff;
+    max-width: 350px;
+    width: 100%;
+    padding: 61px 34px;
+    border-radius: 10px;
+    margin: 3em auto;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+   
+}
+
+h1{
+    text-align: center;
+}
+
+input[type="text"], 
+input[type="password"]{
+    width: 100%;    
+    margin: 7px 0;
+    border-radius: 5px;
+    padding: 8px 17px;     
+    border: 1px solid#CACACA;
+    font-size: 14px;
+    font-weight: 400;
+    outline: none;
+    transition: border-bottom-width 0.3s;
+}
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-bottom: 2px solid dodgerblue;
+}
+.link > a {
+    display: inline-block; /* Para que los enlaces estén en línea */
+    margin: 12px 0px 0px 11px; 
+    text-decoration: none;
+    font-size: 12px;
+    color:  dodgerblue;
+    
+}
+
+
+.btn{
+    font-size: 17px;
+    padding: 0.5em 2em;
+    border: transparent;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    background: dodgerblue;
+    color: white;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+    margin-top: 12px;
+}
+.btn:hover {
+    cursor: pointer;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(30,144,255,1) 0%, rgba(0,212,255,1) 100%);
+   }
+
+.btn > a{
+    color: white;
+    text-decoration: none;
+}
+
+form {
+    display: flex;
+    flex-direction: column;   
+}
+
+form > a {
+   margin-left: 60px;
+}
+
+   
+button:active {
+    transform: translate(0em, 0.2em);
+}
+
+.line{
+    position: relative;
+    height: 1px;
+    width: 100%;
+    margin: 36px 0;
+    background-color: #d4d4d4;
+}
+
+.line::before{
+    content: 'Or';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FFF;
+    color: #8b8b8b;
+    padding: 0 15px;
+}
+
+
+.media-options a{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;    
+}
+
+a.gmail, a.hotmail{
+    color: #fff; 
+    background: rgb(24, 107, 190);   
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 15px;
+
+}
+a.gmail:hover, a.hotmail:hover{
+    cursor: pointer;    
+    background: linear-gradient(90deg, rgb(31, 111, 192) 0%, rgb(5, 155, 185) 100%);
+}
+
+.facebook-icon,
+.google-img {
+    position: absolute;
+    left: 40%;
+    transform: translateY(-5%);
+}
+
+.google-img {
+    top: 30em;
+    transform: translateY(-4%);
+}
+

@@ -1,0 +1,297 @@
+/* Google Font Link */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+/* Estilos generales */
+/* Reset de estilos y configuración de fuente */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+/* Estilos de la barra lateral */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 78px;
+    background: #17A589;
+    padding: 6px 14px;
+    z-index: 99;
+    transition: width 0.5s ease; /* Transición para animar el cambio de ancho */
+}
+
+.sidebar.open {
+    width: 250px; /* Ancho expandido cuando la barra lateral está abierta */
+}
+
+/* Detalles del logotipo en la barra lateral */
+.sidebar .logo-details {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.sidebar .logo-details .icon,
+.sidebar .logo-details .logo_name {
+    opacity: 0; /* Inicialmente oculto */
+    transition: opacity 0.5s ease; /* Transición para animar la opacidad */
+}
+
+.sidebar.open .logo-details .icon,
+.sidebar.open .logo-details .logo_name {
+    opacity: 1; /* Mostrar cuando la barra lateral está abierta */
+}
+
+/* Botón de menú en la barra lateral */
+.sidebar .logo-details #btn {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    font-size: 23px;
+    text-align: center;
+    cursor: pointer;
+    transition: text-align 0.5s ease; /* Transición para animar el cambio de alineación del texto */
+}
+
+.sidebar.open .logo-details #btn {
+    text-align: right; /* Alinear a la derecha cuando la barra lateral está abierta */
+}
+
+/* Iconos en la barra lateral */
+.sidebar i {
+    color: #fff;
+    height: 60px;
+    min-width: 50px;
+    font-size: 28px;
+    text-align: center;
+    line-height: 60px;
+}
+
+/* Lista de navegación en la barra lateral */
+.sidebar .nav-list {
+    margin-top: 20px;
+    height: 100%;
+}
+
+/* Elementos de la lista en la barra lateral */
+.sidebar li {
+    position: relative;
+    margin: 8px 0;
+    list-style: none;
+}
+
+/* Información de tooltip para elementos de la lista en la barra lateral */
+.sidebar li .tooltip {
+    position: absolute;
+    top: -20px;
+    left: calc(100% + 15px);
+    z-index: 3;
+    background: #fff;
+    box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 400;
+    opacity: 0; /* Inicialmente oculto */
+    white-space: nowrap;
+    pointer-events: none;
+    transition: opacity 0.4s, top 0.4s, transform 0.4s; /* Transición para animar la apariencia */
+}
+
+.sidebar li:hover .tooltip {
+    opacity: 1; /* Mostrar al pasar el mouse */
+    pointer-events: auto;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.sidebar.open li .tooltip {
+    display: none; /* Ocultar cuando la barra lateral está abierta */
+}
+
+/* Entrada de búsqueda en la barra lateral */
+.sidebar input {
+    font-size: 15px;
+    color: #fff;
+    font-weight: 400;
+    outline: none;
+    height: 50px;
+    width: 100%;
+    width: 50px;
+    border: none;
+    border-radius: 12px;
+    transition: all 0.5s ease; /* Transición para animar los cambios */
+    background: #138D75 ;
+}
+
+.sidebar.open input {
+    padding: 0 20px 0 50px;
+    width: 100%;
+}
+
+/* Icono de búsqueda en la barra lateral */
+.sidebar .bx-search {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    font-size: 22px;
+    background: #138D75 ;
+    color: #FFF;
+}
+
+.sidebar.open .bx-search:hover,
+.sidebar .bx-search:hover {
+    cursor: pointer;
+    background: green ;
+    color: white;
+}
+
+/* Enlaces en la lista de navegación en la barra lateral */
+.sidebar li a {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    border-radius: 12px;
+    align-items: center;
+    text-decoration: none;
+    transition: background 0.4s ease; /* Transición para animar los cambios */
+    background: #138D75 ;
+}
+
+.sidebar li a:hover {
+    background: #138D75 ; /* Cambio de color al pasar el mouse */
+}
+
+/* Nombre de los enlaces en la lista de navegación en la barra lateral */
+.sidebar li a .links_name {
+    color: #fff;
+    font-size: 15px;
+    font-weight: 400;
+    white-space: nowrap;
+    opacity: 0; /* Inicialmente oculto */
+    pointer-events: none;
+    transition: opacity 0.4s; /* Transición para animar la opacidad */
+}
+
+.sidebar.open li a .links_name {
+    opacity: 1; /* Mostrar cuando la barra lateral está abierta */
+    pointer-events: auto;
+}
+
+/* Cambio de color al pasar el mouse sobre los enlaces en la lista de navegación en la barra lateral */
+.sidebar li a:hover .links_name,
+.sidebar li a:hover i {
+    color: #11101D;
+}
+
+/* Iconos en los enlaces de la lista de navegación en la barra lateral */
+.sidebar li i {
+    height: 50px;
+    line-height: 50px;
+    font-size: 18px;
+    border-radius: 12px;
+}
+
+/* Perfil en la barra lateral */
+.sidebar li.profile {
+    position: fixed;
+    height: 60px;
+    width: 78px;
+    left: 0;
+    bottom: -8px;
+    padding: 10px 14px;
+    background:  #138D75;
+    transition: width 0.5s ease; /* Transición para animar el cambio de ancho */
+    overflow: hidden;
+}
+
+.sidebar.open li.profile {
+    width: 250px; /* Ancho expandido cuando la barra lateral está abierta */
+}
+
+/* Detalles del perfil en la barra lateral */
+.sidebar li .profile-details {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+}
+
+/* Imagen de perfil en la barra lateral */
+.sidebar li img {
+    height: 45px;
+    width: 45px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 10px;
+}
+
+/* Nombre y trabajo en el perfil en la barra lateral */
+.sidebar li.profile .name,
+.sidebar li.profile .job {
+    font-size: 15px;
+    font-weight: 400;
+    color: #fff;
+    white-space: nowrap;
+}
+
+.sidebar li.profile .job {
+    font-size: 12px;
+}
+
+/* Botón de cierre de sesión en el perfil en la barra lateral */
+.sidebar .profile #log_out {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    background:  #138D75 ;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 0px;
+    transition: width 0.5s ease; /* Transición para animar el cambio de ancho */
+}
+
+.sidebar.open .profile #log_out {
+    width: 50px; /* Ancho reducido cuando la barra lateral está abierta */
+    background: none;
+}
+.banner{
+    width: 100%;
+    height: 56px;
+    background: #E4E9F7;
+    border-bottom: 1px solid  #B3B6B7 ; 
+    
+}
+
+/* Sección principal del contenido */
+.home-section {
+    display: flex;
+    justify-content: center;
+    background: #E4E9F7;    
+    min-height: 90vh;   
+    overflow-x: hidden;   
+    max-width: calc(100% - 0px); /* Ancho restante */
+    transition: left 0.5s ease, width 0.5s ease; /* Transiciones para animar los cambios */
+    z-index: 2;
+   
+}
+
+/* Cambios en la sección principal del contenido cuando la barra lateral está abierta */
+.sidebar.open ~ .home-section {
+    left: 250px; /* Desplazamiento cuando la barra lateral está abierta */
+    width: 100% /* Ancho restante cuando la barra lateral está abierta */
+}
+
+
+@media (max-width: 420px) {
+    .sidebar li .tooltip {
+        display: none; /* Ocultar tooltip en dispositivos móviles */
+    }
+}
