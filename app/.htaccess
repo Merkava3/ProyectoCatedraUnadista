@@ -1,0 +1,17 @@
+# Activar el módulo de reescritura
+RewriteEngine On
+
+# Configuración básica de seguridad
+# Desactivar la lista de directorios
+Options -Indexes
+
+# Redirigir todas las solicitudes a index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L]
+
+# Proteger archivos sensibles
+<FilesMatch "\.(htaccess|htpasswd|ini|phar|sql|bak|config|inc|dist|psd|log|sh|kdb|db|tgz|bz2|zip|rar|tar)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
