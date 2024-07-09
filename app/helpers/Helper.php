@@ -1,5 +1,5 @@
 <?php
-namespace Utilidades;
+namespace helpers;
 
 class Helper{
     // Método para verificar Encriptar contraseña
