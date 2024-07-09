@@ -1,15 +1,21 @@
 <?php
-namespace Modelo;
+namespace Models;
 
-class Conexion {
-    private $server_name = "localhost";
-    private $username = "servidor";
-    private $password = "";
-    private $database = "catedra";
+require_once __DIR__ . '/../config/config.php';
+
+class Conexion {    
+    private $server_name;
+    private $username;
+    private $password;
+    private $database;
     private $conexion;
     private static $instancia = null;
 
     private function __construct() {
+        $this->server_name = DB_HOST;
+        $this->username = DB_USER;
+        $this->password = DB_PASS;
+        $this->database = DB_NAME;
         $this->conexion = $this->crearConexion();
     }
 
