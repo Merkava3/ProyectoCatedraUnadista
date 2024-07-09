@@ -1,54 +1,57 @@
 <?php
-// Incluir el archivo de configuración de la base de datos y los modelos
-// Estos archivos contienen las definiciones de clases necesarias para manejar la base de datos y las operaciones de la aplicación
+// Cargar el archivo autoload.php para la carga automática de clases
+require_once '../app/autoload.php';
 
-require_once 'Conexion.php';  // Proporciona la conexión a la base de datos
-require_once 'DataAccessInterface.php'; // Define la interfaz que deben implementar las clases que acceden a la base de datos
-require_once 'DatabaseHandler.php'; // Clase abstracta que implementa métodos comunes para el acceso a la base de datos
-require_once 'DynamicQuery.php';   // Implementa consultas dinámicas en la base de datos
-require_once 'MainController.php';  // Asegúrate de que este archivo existe. Define el controlador principal de la aplicación
-require_once 'Helper.php'; // Contiene funciones auxiliares, como la encriptación de contraseñas
+// Incluir el archivo de inicialización para cargar configuraciones y funciones comunes
+require_once '../app/init.php';
 
+// Función para cargar automáticamente los controladores
+spl_autoload_register(function ($class_name) {
+    // Ruta relativa a la carpeta controllers
+    $class_path = '../app/controllers/' . $class_name . '.php';
+    if (file_exists($class_path)) {
+        require_once $class_path;
+    }
+});
 
 // Obtener la URL solicitada
-// Si se ha pasado una URL a través de la solicitud GET, se utiliza esa URL; de lo contrario, se usa 'index/index' por defecto
-$url = isset($_GET['url']) ? $_GET['url'] : 'index/index';
+$url = isset($_GET['url']) ? $_GET['url'] : 'user/index'; // Si no se especifica URL, se usa 'user/index' como default
 
 // Dividir la URL en partes
-// Separa la URL en componentes individuales basados en el carácter '/'
-
 $urlParts = explode('/', rtrim($url, '/'));
-//print_r ($urlParts); // Esta línea de código está encargada de dividir la URL en partes, para que se pueda determinar qué controlador y método se deben utilizar.
 
-// Obtener el controlador y el método
-// Asigna 'MainController' como el controlador por defecto
-$controllerName = 'MainController'; 
-// Si hay una segunda parte en la URL, la usamos como nombre del método; de lo contrario, el método por defecto es 'crear'
-// Predefined array of request types
-$Requests = array("crear","all", "update", "delete", "query", "getid","login","logout","type");
-$NameFunction = "";
+// Obtener el nombre del controlador y el método
+$controllerName = ucfirst($urlParts[0]) . 'Controller';
+$methodName = isset($urlParts[1]) ? $urlParts[1] : 'index'; // Método por defecto es 'index'
 
-// Loop through the predefined request array
-foreach ($Requests as $request) {
-    if (isset($urlParts[0]) && $request == $urlParts[0]) {
-        $NameFunction = $request;        
-        break;
+// Ruta del controlador
+$controllerPath = '../app/controllers/' . $controllerName . '.php';
+
+// Verificar si el archivo del controlador existe y cargarlo
+if (file_exists($controllerPath)) {
+    require_once $controllerPath;
+
+    // Verificar si la clase del controlador existe
+    if (class_exists($controllerName)) {
+        $controller = new $controllerName();
+
+        // Verificar si el método existe en el controlador y llamarlo
+        if (method_exists($controller, $methodName)) {
+            // Llamar al método con los parámetros restantes de la URL
+            call_user_func_array([$controller, $methodName], array_slice($urlParts, 2));
+        } else {
+            // Método no encontrado
+            require_once '../app/views/error404.html';
+        }
+    } else {
+        // Clase del controlador no encontrada
+        require_once '../app/views/error404.html';
     }
-}
-
-$methodName = isset($urlParts[1]) ? $urlParts[1] : $NameFunction;
-
-// Verificar si el método existe en el archivo del controlador
-// Comprueba si el método especificado existe en la clase del controlador
-if (method_exists($controllerName, $methodName)) {
-    // Llamar al método
-    // Llama al método del controlador de forma dinámica
-   call_user_func([$controllerName, $methodName]);
 } else {
-    // Mostrar página de error 404  
-    header('Content-Type: application/json');
-    echo json_encode(['success' => false, 'message' => 'Error 404: Método no encontrado']);
+    // Archivo del controlador no encontrado
+    require_once '../app/views/error404.html';
 }
+
 /* 
 Funciones rtrim() y explode():
 Funcion rtrim($url, '/') :
@@ -111,5 +114,6 @@ Devolver valores: Las funciones pueden devolver valores que se pueden utilizar e
 Funciones internas y anónimas: PHP ofrece funciones internas, como echo y print, y también permite definir funciones anónimas, que se pueden utilizar en situaciones específicas
 
 */
-
 ?>
+
+
