@@ -91,7 +91,7 @@ async function Delete() {
 
         const resultText = await response.text();
         console.log("Texto de respuesta:", resultText);
-
+//  react-hook-form, zustsand, sonner, react tanstack table, next-auth, react-select, shadcn/ui, tailwindcss, tailwindui 
         let result;
         try {
             result = JSON.parse(resultText);
