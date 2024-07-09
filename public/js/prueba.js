@@ -4,8 +4,9 @@ import  {UrlUserInsert,
         UrlUserGetId, 
         UrlUserUpdate,
         UrlUserLogin, 
-        UrlUserSesion } from "./utils.js";
-
+        UrlUserSesion,
+        UrlContentInsert } from "./const.js";
+/* -------------------------------------- usuario ----------------------------- */
 async function crear_usuario() {
     let indentificacion = prompt("Ingrese identificacion :");
     let nombre = prompt("Ingrese nombre : ");
@@ -218,8 +219,9 @@ async function update(){
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ correo, pws })
             });
-            const result = await response.json();
+            const result = await response.text();
             console.log(result);
+            /*
             if (result.success) {
                 console.log("Bienvenido", result);
                 window.location.href = result.pages; // Redirige a la página principal o a la página correspondiente
@@ -227,10 +229,12 @@ async function update(){
                 console.log(result.message);
                 alert('Inicio de sesión fallido. Verifique sus credenciales.');
             }
+                */
         } catch (error) {
             console.error('Error en la solicitud:', error);
             alert('Ocurrió un error durante el inicio de sesión.');
         }
+            
     }
 
     async function UserSesion(){
@@ -248,8 +252,26 @@ async function update(){
             
         }
     }
+    /* -------------------------------------- End usuario ----------------------------- */
 
-    
+async function InsertContent(){
+    let sobre_curso = prompt("ingrese contenido del curso : ")
+    try {
+        const response = await  fetch(UrlContentInsert, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({sobre_curso})
+
+        });
+        const resultText = await response.text();
+        console.log("Texto de respuesta:", resultText);    
+        
+    } catch (error) {
+        console.error("error en la consulta : ", error)
+        
+    }
+
+}
 
 
 
@@ -262,8 +284,9 @@ async function update(){
 //Delete();
 //getIdUpdate();
 //update();
-login();
+//login();
 //UserSesion();
+InsertContent();
 
 
 
