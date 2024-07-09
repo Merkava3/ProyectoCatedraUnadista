@@ -1,9 +1,10 @@
 <?php
-namespace Modelo;
+namespace models;
 
 require_once 'QueryInnerjoin.php';
+require_once 'DatabaseHandler.php';
 
-use Utilidades\Helper;
+use helpers\Helper;
 
 class DynamicQuery extends DatabaseHandler {
     private $table;
