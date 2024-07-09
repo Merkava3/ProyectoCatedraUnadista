@@ -1,7 +1,8 @@
 <?php
-namespace Modelo;
-use Modelo\Conexion;
-use Modelo\DataAccessInterface;
+namespace Models;
+
+use models\Conexion;
+use models\DataAccessInterface;
 
 abstract class DatabaseHandler implements DataAccessInterface {
     protected $conexion;
@@ -53,7 +54,5 @@ abstract class DatabaseHandler implements DataAccessInterface {
     public function cerrarConexion() {
         Conexion::getInstancia()->cerrarConexion();
     }
-    
-    
- }
- ?>
+}
+?>

@@ -1,0 +1,26 @@
+mvc-php/
+├── app/
+│   ├── config/
+│   │   └── config.php
+│   ├── controllers/
+│   │   └── MainController.php
+│   ├── helpers/
+│   │   └── DataValidator.php
+│   ├── lib/
+│   │   └── Core.php
+│   ├── models/
+│   │   ├── Conexion.php
+│   │   ├── DataAccessInterface.php
+│   │   ├── DatabaseHandler.php
+│   │   └── DynamicQuery.php
+│   ├── views/
+│   ├── .htaccess
+│   └── init.php
+├── public/
+│   ├── css/
+│   ├── img/
+│   ├── js/
+│   │   └── app.js
+│   ├── .htaccess
+│   └── index.php
+└── .htaccess

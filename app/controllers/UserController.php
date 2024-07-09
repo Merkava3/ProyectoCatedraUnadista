@@ -1,15 +1,13 @@
 <?php
 
-use Modelo\DynamicQuery;
-require_once 'DataValidator.php';
-require_once 'DynamicQuery.php';
+use Models\DynamicQuery;
+require_once '../app/models/DynamicQuery.php';
+require_once '../app/helpers/DataValidator.php'; 
 
-
-class MainController {
+class UserController {
 
     private static $Query;
 
-    // Initialize the static Query instance
     public static function init() {
         self::$Query = new DynamicQuery("usuario");
     }
@@ -21,27 +19,22 @@ class MainController {
             exit;
         }
     }
-    
+
     public static function crear() {
         self::verificarSesion();
-        self::init(); // Ensure initialization        
-        header('Content-Type: application/json'); // Asegúrate de que la respuesta sea JSON
-
-        // Procesar la solicitud POST
+        self::init();
+        header('Content-Type: application/json');
         $input = file_get_contents("php://input");
         $data = json_decode($input, true);
-
        
         $validation = false;
         $message = '';
         $responseData = [];
 
-        // Validar JSON
         if (json_last_error() !== JSON_ERROR_NONE) {
             $message = 'Error al decodificar el JSON';
             $responseData = ['success' => $validation, 'message' => $message, 'data' => null];
         } else {
-            // Validar los datos
             $errors = DataValidator::validateData($data);
             if (!empty($errors)) {
                 $message = 'Datos inválidos';
@@ -50,94 +43,77 @@ class MainController {
                 $message = 'Datos vacíos';
                 $responseData = ['success' => $validation, 'message' => $message, 'data' => null];
             } else {                
-                
                 $result = self::$Query->created($data);
-
                 if ($result['success']) {
                     $validation = true;
                     $message = 'Datos recibidos y guardados';
                 } else {                  
-                    $message = $result['message']; // Mostrar mensaje de error específico
+                    $message = $result['message'];
                 }
-
-                $responseData = ['success' => $validation, 'message' => $message, 'data' => Null];
+                $responseData = ['success' => $validation, 'message' => $message, 'data' => null];
             }
         }
 
         echo json_encode($responseData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        exit; // Asegúrate de que no haya más salida después de esto
+        exit;
     }
 
-    public static function all(){
+    public static function all() {
         self::verificarSesion();
-        self::init(); // Ensure initialization
+        self::init();
         $result = self::$Query->obtenerTodos();
         print_r($result);  
-       }
+    }
 
-    public static function getid(){
+    public static function getid() {
         self::verificarSesion();
-        self::init(); 
-        header('Content-Type: application/json'); // Asegúrate de que la respuesta sea JSON
-        
-        // Procesar la solicitud GET
+        self::init();
+        header('Content-Type: application/json');
         $input = file_get_contents("php://input");
         $data = json_decode($input, true);
-        //var_dump($data);
         $column = implode(", ", array_keys($data));
-        
-        // Asegúrate de que la decodificación del JSON no tenga errores
+
         if (json_last_error() !== JSON_ERROR_NONE) {
             echo json_encode(['success' => false, 'message' => 'Error al decodificar el JSON']);
             exit;
         }
-    
-        // Validar la identificación
-        if (!isset($data[ $column ]) || !DataValidator::validateNumericString($data[ $column ])) {
+
+        if (!isset($data[$column]) || !DataValidator::validateNumericString($data[$column])) {
             echo json_encode(['success' => false, 'message' => 'Identificacion no valida']);
             exit;
         }
-    
+
         $result = self::$Query->obtenerPorId($data);
-        
-        // Devolver la respuesta JSON
         echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        exit; // Asegúrate de que no haya más salida después de esto
+        exit;
     }
-    
-    public static function delete(){
+
+    public static function delete() {
         self::verificarSesion();
-        self::init(); 
-        header('Content-Type: application/json'); // Asegúrate de que la respuesta sea JSON
-    
-        // Procesar la solicitud DELETE
+        self::init();
+        header('Content-Type: application/json');
         $input = file_get_contents("php://input");
         $data = json_decode($input, true);
-    
-        // Asegúrate de que la decodificación del JSON no tenga errores
+
         if (json_last_error() !== JSON_ERROR_NONE) {
             echo json_encode(['success' => false, 'message' => 'Error al decodificar el JSON']);
             exit;
         }
-    
-        // Validar la identificación
+
         if (!isset($data['indentificacion']) || !DataValidator::validateNumericString($data['indentificacion'])) {
             echo json_encode(['success' => false, 'message' => 'Identificacion no valida']);
             exit;
         }
         
         $result = self::$Query->eliminar($data);
-    
-        // Devolver la respuesta JSON
         echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        exit; // Asegúrate de que no haya más salida después de esto
+        exit;
     }
 
-    public static function update(){
+    public static function update() {
         self::verificarSesion();
-        self::init(); 
-        header('Content-Type: application/json'); // Asegúrate de que la respuesta sea JSON        
-        // Procesar la solicitud GET
+        self::init();
+        header('Content-Type: application/json');
         $input = file_get_contents("php://input");
         $data = json_decode($input, true);
         var_dump($data);
@@ -148,30 +124,26 @@ class MainController {
         if (json_last_error() !== JSON_ERROR_NONE) {
             $message = 'Error al decodificar el JSON';
             $responseData = ['success' => $validation, 'message' => $message, 'data' => null];
-        }else{
+        } else {
             $errors = DataValidator::validateData($data);
             if (!empty($errors)) {
                 $message = 'Datos inválidos';
                 $responseData = ['success' => $validation, 'message' => $message, 'errors' => $errors];
-               
-            }elseif(empty($data) || self::arrayValuesEmpty($data)){
+            } elseif (empty($data) || self::arrayValuesEmpty($data)) {
                 $message = 'Datos vacíos';
                 $responseData = ['success' => $validation, 'message' => $message, 'data' => null];
-
-            }else{                
+            } else {                
                 $result = self::$Query->actualizar($data);
                 if ($result['success']) {
                     $validation = true;
                     $message = 'Datos Actualzidos';
                 } else {                  
-                    $message = $result['message']; // Mostrar mensaje de error específico
+                    $message = $result['message'];
                 }
-
-                $responseData = ['success' => $validation, 'message' => $message, 'data' => Null];
+                $responseData = ['success' => $validation, 'message' => $message, 'data' => null];
             }
             echo json_encode($responseData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-            exit; // Asegúrate de que no haya más salida después de esto
-
+            exit;
         }
     }
 
@@ -207,61 +179,30 @@ class MainController {
     }
 
     public static function logout() {
-        self::verificarSesion();
-        self::init();
-    
-        if (isset($_SESSION['user'])) {
-            $userId = $_SESSION['user']['id_usuario'];
-    
-            // Actualizar el estado de la sesión a false en la base de datos usando el método específico
-            list($success, $stmtOrError) = self::$Query->actualizarEstadoSesion($userId);
-    
-            if (!$success) {
-                echo json_encode(['success' => false, 'message' => 'Error al actualizar el estado de la sesión: ' . $stmtOrError], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-                exit;
-            }
-        }
-    
-        // Destruir la sesión en PHP
-        session_unset();
+        session_start();
         session_destroy();
-    
-        // Devolver la respuesta JSON
-        echo json_encode(['success' => true, 'message' => 'Sesión cerrada correctamente'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        echo json_encode(['success' => true, 'message' => 'Sesión cerrada']);
         exit;
     }
-    
 
-  public static function type(){
-    self::verificarSesion();
-    self::init();
-    header('Content-Type: application/json');
-    if (isset($_SESSION['user'])) {
-        echo json_encode(['tipo_usuario' => $_SESSION['user']['tipo_usuario']]);
-    } else {
-        echo json_encode(['tipo_usuario' => null]);
+    public static function type() {
+        self::verificarSesion();
+        self::init();
+        $result = self::$Query->obtenerUsuariosPorTipo();
+        echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        exit;
     }
-  }
 
-  public static function users(){
-    self::verificarSesion();
-    self::init();
-    header('Content-Type: application/json');
-        
-    $input = file_get_contents("php://input");
-    $data = json_decode($input, true);
-    
-    $querys = array(
-
-
-    );
-    list($success, $stmtOrError) = self::$Query->actualizarEstadoSesion();
-    
-
-
-
-  }
-    
+    public static function users() {
+        self::verificarSesion();
+        session_start();
+        if (isset($_SESSION['user'])) {
+            echo json_encode(['success' => true, 'user' => $_SESSION['user']]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'No hay sesión activa']);
+        }
+        exit;
+    }
 
     private static function arrayValuesEmpty($array) {
         foreach ($array as $value) {
@@ -272,5 +213,3 @@ class MainController {
         return true;
     }
 }
-?>
-
