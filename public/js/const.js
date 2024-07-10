@@ -13,5 +13,6 @@ export const UrlUserSesion = 'index.php?url=user/users';
 /* -------------------end usuarios---------------------------- */
 
 /* --------------------------contenido-------------------------------*/
-export const UrlContentInsert = "index.php?url=Content/crear";
+export const UrlContentUpdate = "index.php?url=Content/update";
+export const UrlContentLoad = "index.php?url=Content/load";
 /* --------------------------end contenido---------------------------*/
