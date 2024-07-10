@@ -1,11 +1,15 @@
-import  {UrlUserInsert, 
-        UrlUserAll, 
-        UrlUserDelete, 
-        UrlUserGetId, 
-        UrlUserUpdate,
-        UrlUserLogin, 
-        UrlUserSesion,
-        UrlContentInsert } from "./const.js";
+import { 
+    UrlUserInsert, 
+    UrlUserAll, 
+    UrlUserDelete, 
+    UrlUserGetId, 
+    UrlUserUpdate,
+    UrlUserLogin, 
+    UrlUserSesion,
+    UrlContentUpdate,
+    UrlContentLoad 
+} from "./const.js";
+
 /* -------------------------------------- usuario ----------------------------- */
 async function crear_usuario() {
     let indentificacion = prompt("Ingrese identificacion :");
@@ -62,22 +66,18 @@ async function crear_usuario() {
         console.error('Hubo un problema con la solicitud Fetch:', error);
     }
 }
+
 async function GetAll(){    
     try {
-        const response = await  fetch(UrlUserAll, {
+        const response = await fetch(UrlUserAll, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
-
         });
         const resultText = await response.text();
         console.log("Texto de respuesta:", resultText);      
-        
-        
     } catch (error) {
         console.error('Hubo un problema con la solicitud Fetch:', error);
-        
     }
-    
 }
 
 async function Delete() {
@@ -91,18 +91,16 @@ async function Delete() {
 
         const resultText = await response.text();
         console.log("Texto de respuesta:", resultText);
-//  react-hook-form, zustsand, sonner, react tanstack table, next-auth, react-select, shadcn/ui, tailwindcss, tailwindui 
+
         let result;
         try {
             result = JSON.parse(resultText);
         } catch (e) {
-            //console.log("Texto de respuesta para depuración:", resultText);// error
-            console.error('Error parsing JSON:', e);            
+            console.error('Error parsing JSON:', e);
             throw new Error('Invalid JSON received from server');
         }
 
-        //console.log(result.success);
-        if (result.success) {           
+        if (result.success) {
             console.log('Eliminación exitosa:', result.message);
         } else {
             console.log('Error en la eliminación:', result.message);
@@ -134,21 +132,17 @@ async function GetId() {
             throw new Error('Invalid JSON received from server');
         }
 
-       
         if (result.success) {
             console.log('Datos recibidos:', result.data);
-        } if (result.success === false) {
-            console.log(result.message);         
-
-        }else{
+        } else {
             console.log('Error al obtener datos:', result.message);
         }
-
 
     } catch (error) {
         console.error('Hubo un problema con la solicitud Fetch:', error);
     }
 }
+
 async function getIdUpdate(){
     let list = {};   
     let id_usuario = prompt("Ingrese el id : ");
@@ -161,122 +155,133 @@ async function getIdUpdate(){
 
         const result = await response.json();       
         if (result.success) {
-            
-            list = {"successfulness":true, id_usuario:id_usuario , "collection":result.data};
-            
+            list = {"successfulness": true, id_usuario: id_usuario, "collection": result.data};
         } else {
-            list = {"successfulness":false, "collection" : null};            
+            list = {"successfulness": false, "collection" : null};            
         }
         return list;
 
-        
     } catch (error) {
-        console.error(error)
-        
+        console.error(error);
     }
-
-
-
 } 
-async function update(){
+
+async function update() {
     const list = await getIdUpdate(); // Espera a que getIdUpdate termine y obtiene su resultado
    
     if(list.successfulness){        
         console.log("Datos obtenidos para la actualización:", list.collection);
         try {
             let id_usuario = list.id_usuario;       
-        let indentificacion = prompt("Ingrese identificacion :");
-        let nombre = prompt("Ingrese nombre : ");
-        let apellido = prompt("Ingrese Apellido : ");
-        let genero = prompt("Ingrese genero : ");
-        let correo = prompt("Ingrese el Correo : ");
-        let tipo_usuario = prompt("Ingrese tipo de usuario ");
-        let pws = prompt("Ingrese la contraseña : ");
+            let indentificacion = prompt("Ingrese identificacion :");
+            let nombre = prompt("Ingrese nombre : ");
+            let apellido = prompt("Ingrese Apellido : ");
+            let genero = prompt("Ingrese genero : ");
+            let correo = prompt("Ingrese el Correo : ");
+            let tipo_usuario = prompt("Ingrese tipo de usuario ");
+            let pws = prompt("Ingrese la contraseña : ");
 
             const response = await fetch(UrlUserUpdate, {
                 method: 'PUT', // Cambia el método a POST
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({id_usuario,indentificacion, nombre, apellido, genero, correo, tipo_usuario, pws })
+                body: JSON.stringify({id_usuario, indentificacion, nombre, apellido, genero, correo, tipo_usuario, pws })
             });
             const resultText = await response.text();
             console.log("Texto de respuesta:", resultText);
             
         } catch (error) {
-            
+            console.error('Hubo un problema con la solicitud Fetch:', error);
         }
-    }else{
+    } else {
         console.log("No se encontraron datos para la actualización", list);
     }
-    
-    }
+}
 
-    async function login() {
-        let correo = prompt("Ingrese el correo : ");
-        let pws = prompt("Ingrese la contraseña : ");
-        try {
-            const response = await fetch(UrlUserLogin, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ correo, pws })
-            });
-            const result = await response.text();
-            console.log(result);
-            /*
-            if (result.success) {
-                console.log("Bienvenido", result);
-                window.location.href = result.pages; // Redirige a la página principal o a la página correspondiente
-            } else {
-                console.log(result.message);
-                alert('Inicio de sesión fallido. Verifique sus credenciales.');
-            }
-                */
-        } catch (error) {
-            console.error('Error en la solicitud:', error);
-            alert('Ocurrió un error durante el inicio de sesión.');
-        }
-            
-    }
-
-    async function UserSesion(){
-       
-        try {
-            const response = await fetch(UrlUserSesion,{
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify()
-            });
-            const result = await response.text();
-            console.log(result);
-        } catch (error) {
-            console.error("error en la consulta : ", error)
-            
-        }
-    }
-    /* -------------------------------------- End usuario ----------------------------- */
-
-async function InsertContent(){
-    let sobre_curso = prompt("ingrese contenido del curso : ")
+async function login() {
+    let correo = prompt("Ingrese el correo : ");
+    let pws = prompt("Ingrese la contraseña : ");
     try {
-        const response = await  fetch(UrlContentInsert, {
+        const response = await fetch(UrlUserLogin, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({sobre_curso})
+            body: JSON.stringify({ correo, pws })
+        });
+        const result = await response.text();
+        console.log(result);
+        /*
+        if (result.success) {
+            console.log("Bienvenido", result);
+            window.location.href = result.pages; // Redirige a la página principal o a la página correspondiente
+        } else {
+            console.log(result.message);
+            alert('Inicio de sesión fallido. Verifique sus credenciales.');
+        }
+        */
+    } catch (error) {
+        console.error('Error en la solicitud:', error);
+        alert('Ocurrió un error durante el inicio de sesión.');
+    }
+}
 
+async function UserSesion() {
+    try {
+        const response = await fetch(UrlUserSesion, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify()
+        });
+        const result = await response.text();
+        console.log(result);
+    } catch (error) {
+        console.error("error en la consulta : ", error);
+    }
+}
+/* -------------------------------------- End usuario ----------------------------- */
+
+async function InsertContent() {
+    let contenido_sobre = {};
+    let nuestro_servicio = {};
+    let portafolio = {valor:"hola", acto:"mundo"};
+    
+    let contenido_one = prompt("ingrese contenido 1 del curso : ");
+    let contenido_two = prompt("ingrese contenido 2 del curso : ");
+    let contenido_three = prompt("ingrese contenido 3 del curso : ");
+    let servicio_one = prompt("ingrese servicio 1 : ");
+    let servicio_two = prompt("ingrese servicio 2 del cur");
+    let servicio_three = prompt("ingrese servicio 3 del curso : ");
+    contenido_sobre = {contenido_one, contenido_two, contenido_three}
+    nuestro_servicio = {servicio_one, servicio_two, servicio_three}
+    try {
+        const response = await fetch(UrlContentUpdate, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({contenido_sobre, nuestro_servicio, portafolio, id_usuario_contenido: 91})
         });
         const resultText = await response.text();
         console.log("Texto de respuesta:", resultText);    
         
     } catch (error) {
-        console.error("error en la consulta : ", error)
-        
+        console.error("error en la consulta : ", error);
     }
+}
 
+async function load() {
+    try {
+        const response = await fetch(UrlContentLoad, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({id_usuario_contenido:91})
+        });
+        const resultText = await response.text();
+        //console.log(resultText);
+        console.log("Texto de respuesta:", JSON.parse(resultText).data);    
+    } catch (error) {
+        console.error("error en la consulta : ", error);
+    }
 }
 
 
-
-
-
+// ---------------------  usuario ----------------------------
 //crear_usuario(); // arreglar insert
 //update();
 //GetAll();
@@ -286,8 +291,12 @@ async function InsertContent(){
 //update();
 //login();
 //UserSesion();
-InsertContent();
+// --------------------- end usuario ----------------------------
 
+// --------------------------- contenido -------------------------
+//InsertContent();
+load();
+// ---------------------------end contenido -------------------------
 
 
 
