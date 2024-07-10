@@ -70,6 +70,7 @@ class DynamicQuery extends DatabaseHandler {
                 break;
             }
         }
+        //echo "estamos en el id : aca = ".$idKey;
     
         if (!$idKey) {
             return ['success' => false, 'message' => 'No se encontró una clave de identificación válida'];
@@ -88,9 +89,8 @@ class DynamicQuery extends DatabaseHandler {
         $columns = implode(" = ?, ", array_keys($datos)) . " = ?";
         $tipos = str_repeat('s', count($datos)) . 'i';
         $values = array_values($datos);
-        $values[] = $id;
-    
-        $query = "UPDATE {$this->table} SET $columns WHERE $idKey = ?";
+        $values[] = $id;   
+        $query = "UPDATE {$this->table} SET $columns WHERE $idKey = ?";        
     
         // Ejecutar la consulta
         list($success, $stmtOrError) = $this->prepareAndExecute($query, $tipos, $values);
@@ -212,7 +212,7 @@ class DynamicQuery extends DatabaseHandler {
         $this->cerrarConexion();
     }
 
-    public function executeQuery($query, $types = '', $params = []) {
+    private function executeQuery($query, $types = '', $params = []) {
         list($success, $stmtOrError) = $this->prepareAndExecute($query, $types, $params);
         if ($success) {
             if (strpos(trim(strtoupper($query)), 'SELECT') === 0) {
@@ -225,6 +225,12 @@ class DynamicQuery extends DatabaseHandler {
             return ['success' => false, 'message' => 'Error en la consulta: ' . $stmtOrError];
         }
         $this->cerrarConexion();
+    }
+
+    public function executeQuerysAll ($consulta){       
+    return $this->executeQuery($consulta);
+        
+
     }
 
     
