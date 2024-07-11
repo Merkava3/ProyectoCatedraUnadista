@@ -270,15 +270,46 @@ async function load() {
         const response = await fetch(UrlContentLoad, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({id_usuario_contenido:91})
+            body: JSON.stringify({ id_usuario_contenido: 91 })
         });
+        
         const resultText = await response.text();
-        //console.log(resultText);
-        console.log("Texto de respuesta:", JSON.parse(resultText).data);    
+        const result = JSON.parse(resultText);
+        
+        if (result.success) {
+            const data = result.data;
+
+            // Recorrer cada elemento en data
+            data.forEach(item => {
+                // Parsear contenido_sobre y portafolio
+                const contenidoSobre = JSON.parse(item.contenido_sobre);
+                const portafolio = JSON.parse(item.portafolio);
+
+                console.log("Contenido sobre:", contenidoSobre);
+                console.log("Portafolio:", portafolio);
+
+                // Recorrer contenido_sobre
+                for (const key in contenidoSobre) {
+                    if (contenidoSobre.hasOwnProperty(key)) {
+                        console.log(`${key}: ${contenidoSobre[key]}`);
+                    }
+                }
+
+                // Recorrer portafolio
+                for (const key in portafolio) {
+                    if (portafolio.hasOwnProperty(key)) {
+                        console.log(`${key}: ${portafolio[key]}`);
+                    }
+                }
+            });
+        } else {
+            console.error("Error en la respuesta:", result.message);
+        }
     } catch (error) {
-        console.error("error en la consulta : ", error);
+        console.error("Error en la consulta:", error);
     }
 }
+
 
 
 // ---------------------  usuario ----------------------------
