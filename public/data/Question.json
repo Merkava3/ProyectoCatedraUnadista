@@ -1,0 +1,27 @@
+{
+    "preguntas": [
+        {
+            "id_pregunta": 224,
+            "texto_pregunta": "¿Cuál es la capital de Francia?",
+            "tipo_pregunta": "multiple_choice",
+            "respuestas": [
+                {"id_respuesta": 1, "texto_respuesta": "París", "es_correcta": true},
+                {"id_respuesta": 2, "texto_respuesta": "Londres", "es_correcta": false},
+                {"id_respuesta": 3, "texto_respuesta": "Madrid", "es_correcta": false}
+            ],
+            "puntajea": 5
+            
+            
+        },
+        {
+            "id_pregunta": 225,
+            "texto_pregunta": "¿El sol es una estrella?",
+            "tipo_pregunta": "true_false",
+            "respuestas": [
+                {"id_respuesta": 4, "texto_respuesta": "Verdadero", "es_correcta": true},
+                {"id_respuesta": 5, "texto_respuesta": "Falso", "es_correcta": false}
+            ],
+            "puntajea": 5
+        }
+    ]
+}

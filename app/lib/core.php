@@ -1,18 +1,11 @@
 <?php
-// lib/core.php
-
 // Incluir configuraciones
-require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../config/config.php'; // Asegúrate de que esta ruta sea correcta
 
-// Funciones auxiliares
 function base_url($path = '') {
     return BASE_URL . '/' . ltrim($path, '/');
 }
 
-// Clases base o funciones adicionales
-// ...
-
-// Ejemplo de una clase base
 class BaseController {
     public function loadModel($model) {
         require_once __DIR__ . '/../models/' . $model . '.php';

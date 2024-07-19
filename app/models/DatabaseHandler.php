@@ -18,8 +18,10 @@ abstract class DatabaseHandler implements DataAccessInterface {
     abstract public function eliminar($datos);
 
     protected function prepareAndExecute($query, $types = '', $params = []) {
-        // Preparar la consulta       
-        $stmt = mysqli_prepare($this->conexion, $query);       
+        // Preparar la consulta
+          
+        $stmt = mysqli_prepare($this->conexion, $query);
+        //var_dump($stmt);  
         if ($stmt === false) {           
             return [false, "Error en mysqli_prepare: " . mysqli_error($this->conexion)];
         }

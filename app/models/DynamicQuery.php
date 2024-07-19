@@ -17,6 +17,7 @@ class DynamicQuery extends DatabaseHandler {
     public function obtenerTodos() {
         $query = "SELECT * FROM {$this->table}";
         $result = mysqli_query($this->conexion, $query);
+        
         if ($result) {
             $data = $this->fetchResults($result);
             $data = Helper::excludePassword($data);
@@ -26,6 +27,21 @@ class DynamicQuery extends DatabaseHandler {
         }
         $this->cerrarConexion();
         return $response;
+    }
+
+    public function get(){
+        $query = "SELECT * FROM {$this->table}";
+        $result = mysqli_query($this->conexion, $query);
+        if ($result) {
+            $data = $this->fetchResults($result);           
+            $response = ['success' => true, 'data' => $data];
+        } else {
+            $response = ['success' => false, 'error' => mysqli_error($this->conexion)];
+        }
+        $this->cerrarConexion();
+        return $response;
+
+
     }
 
     public function obtenerPorId($datos) {
@@ -70,6 +86,7 @@ class DynamicQuery extends DatabaseHandler {
                 break;
             }
         }
+        //echo "estamos en el id : aca = ".$idKey;
     
         if (!$idKey) {
             return ['success' => false, 'message' => 'No se encontró una clave de identificación válida'];
@@ -88,9 +105,8 @@ class DynamicQuery extends DatabaseHandler {
         $columns = implode(" = ?, ", array_keys($datos)) . " = ?";
         $tipos = str_repeat('s', count($datos)) . 'i';
         $values = array_values($datos);
-        $values[] = $id;
-    
-        $query = "UPDATE {$this->table} SET $columns WHERE $idKey = ?";
+        $values[] = $id;   
+        $query = "UPDATE {$this->table} SET $columns WHERE $idKey = ?";        
     
         // Ejecutar la consulta
         list($success, $stmtOrError) = $this->prepareAndExecute($query, $tipos, $values);
@@ -109,10 +125,8 @@ class DynamicQuery extends DatabaseHandler {
         $column = implode(", ", array_keys($datos));
         $query = "DELETE FROM {$this->table} WHERE {$column} = ?";
         $types = 's'; // Cambiar 's' por el tipo correcto según el tipo de dato de la columna
-        $params = array_values($datos);
-    
-        list($success, $stmtOrError) = $this->prepareAndExecute($query, $types, $params);
-    
+        $params = array_values($datos);    
+        list($success, $stmtOrError) = $this->prepareAndExecute($query, $types, $params);    
         if ($success) {
             return ['success' => true, 'message' => 'Eliminación exitosa'];
         } else {
@@ -212,7 +226,7 @@ class DynamicQuery extends DatabaseHandler {
         $this->cerrarConexion();
     }
 
-    public function executeQuery($query, $types = '', $params = []) {
+    private function executeQuery($query, $types = '', $params = []) {
         list($success, $stmtOrError) = $this->prepareAndExecute($query, $types, $params);
         if ($success) {
             if (strpos(trim(strtoupper($query)), 'SELECT') === 0) {
@@ -225,6 +239,12 @@ class DynamicQuery extends DatabaseHandler {
             return ['success' => false, 'message' => 'Error en la consulta: ' . $stmtOrError];
         }
         $this->cerrarConexion();
+    }
+
+    public function executeQuerysAll ($consulta){       
+    return $this->executeQuery($consulta);
+        
+
     }
 
     

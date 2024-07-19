@@ -116,7 +116,7 @@ class UserController {
         header('Content-Type: application/json');
         $input = file_get_contents("php://input");
         $data = json_decode($input, true);
-        var_dump($data);
+        //var_dump($data);
         
         $validation = false;
         $message = '';
