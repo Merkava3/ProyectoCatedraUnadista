@@ -1,0 +1,14 @@
+{
+    "id_estudiante": 1,
+    "id_examen": 4,
+    "respuestas": [
+        {
+            "id_pregunta": 224,
+            "id_respuesta": 1
+        },
+        {
+            "id_pregunta": 225,
+            "id_respuesta": 4
+        }
+    ]
+}
