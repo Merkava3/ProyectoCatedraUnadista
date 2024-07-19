@@ -17,6 +17,7 @@ class DynamicQuery extends DatabaseHandler {
     public function obtenerTodos() {
         $query = "SELECT * FROM {$this->table}";
         $result = mysqli_query($this->conexion, $query);
+        
         if ($result) {
             $data = $this->fetchResults($result);
             $data = Helper::excludePassword($data);
@@ -26,6 +27,21 @@ class DynamicQuery extends DatabaseHandler {
         }
         $this->cerrarConexion();
         return $response;
+    }
+
+    public function get(){
+        $query = "SELECT * FROM {$this->table}";
+        $result = mysqli_query($this->conexion, $query);
+        if ($result) {
+            $data = $this->fetchResults($result);           
+            $response = ['success' => true, 'data' => $data];
+        } else {
+            $response = ['success' => false, 'error' => mysqli_error($this->conexion)];
+        }
+        $this->cerrarConexion();
+        return $response;
+
+
     }
 
     public function obtenerPorId($datos) {
@@ -109,10 +125,8 @@ class DynamicQuery extends DatabaseHandler {
         $column = implode(", ", array_keys($datos));
         $query = "DELETE FROM {$this->table} WHERE {$column} = ?";
         $types = 's'; // Cambiar 's' por el tipo correcto según el tipo de dato de la columna
-        $params = array_values($datos);
-    
-        list($success, $stmtOrError) = $this->prepareAndExecute($query, $types, $params);
-    
+        $params = array_values($datos);    
+        list($success, $stmtOrError) = $this->prepareAndExecute($query, $types, $params);    
         if ($success) {
             return ['success' => true, 'message' => 'Eliminación exitosa'];
         } else {

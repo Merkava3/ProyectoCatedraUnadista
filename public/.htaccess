@@ -1,7 +1,7 @@
 # Establecer la raíz del documento al directorio public
 RewriteEngine On
 
-# Redirigir todas las solicitudes al controlador frontal (index.php)
+# Excluir archivos existentes y directorios de la redirección
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [L]
@@ -23,12 +23,10 @@ ErrorDocument 403 /403.html
     ExpiresByType image/png "access plus 1 month"
     ExpiresByType text/css "access plus 1 month"
     ExpiresByType text/javascript "access plus 1 month"
-    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"    
 </IfModule>
 
 # Habilitar la compresión de archivos
 <IfModule mod_deflate.c>
     AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
 </IfModule>
-
-

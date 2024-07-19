@@ -7,7 +7,17 @@ import {
     UrlUserLogin, 
     UrlUserSesion,
     UrlContentUpdate,
-    UrlContentLoad 
+    UrlContentLoad,
+    UrlQuestionInsert,
+    UrlQuestionAll,
+    UrlQuestionDelete,
+    UrlQuestionGetId,
+    Urljson,
+    UrlQuestionUpdate,
+    UrlAnswerJson,
+    UrlAnswerInsert,
+    UrlChatGpt4IA,
+    UrlSms
 } from "./const.js";
 
 /* -------------------------------------- usuario ----------------------------- */
@@ -310,6 +320,250 @@ async function load() {
     }
 }
 
+async function InsertQuestionData(){    
+    try {
+        const result = await fetch(Urljson);
+        const resultText = await result.text();
+        examen(resultText)
+        
+    } catch (error) {
+        console.error("Error en la consulta:", error);
+        
+    }
+}
+
+async function examen(data){    
+    try {
+        const result = await fetch(UrlQuestionInsert, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ titulo:"Examen de Historia", descripcion:"Examen para evaluar conocimientos básicos de historia" ,contenido: data, id_tutor: 91})
+
+        });
+        const resultText = await result.text();
+        console.log(resultText);
+        
+    } catch (error) {
+        console.error("Error en la consulta:", error);
+        
+    }
+
+
+}
+
+async function allQuestions(){
+    try {
+        const result = await fetch(UrlQuestionAll, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        const resultText = await result.json();
+        console.log(resultText);
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+async function DeleteQuestion(){
+    try {
+        const result = await fetch(UrlQuestionDelete, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({id_examen:2})
+        });
+        const resultText = await result.text();
+        console.log(resultText);
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+async function SearchQuestion(){
+    try {
+        const result = await fetch(UrlQuestionGetId,{
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({id_examen45})
+        })
+        const response = await result.json();
+        console.log(response);
+        
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
+const buscar = (data, id, cambios) => {
+    for (let pregunta of data) {
+        if (pregunta.id_pregunta === id) {
+            console.log(pregunta.texto_pregunta);
+
+            // Permitir al usuario ingresar un nuevo texto para la pregunta
+            let nuevoTextoPregunta = prompt("Ingrese el nuevo texto para la pregunta: ", pregunta.texto_pregunta);
+            cambios.pregunta = {
+                id_pregunta: pregunta.id_pregunta,
+                texto_pregunta: nuevoTextoPregunta
+            };
+
+            // Actualizar el texto de la pregunta en el objeto original
+            pregunta.texto_pregunta = nuevoTextoPregunta;
+
+            Question(pregunta.respuestas, cambios);
+            break;
+        }
+    }
+}
+
+const Question = (respuestas, cambios) => {
+    let idRespuesta = parseInt(prompt("Ingrese el id de la respuesta: "), 10); // Convertir a número
+    for (let respuesta of respuestas) {
+        if (respuesta.id_respuesta === idRespuesta) {
+            console.log("Respuesta encontrada:", respuesta.texto_respuesta);
+            console.log("Es correcta:", respuesta.es_correcta);
+
+            // Permitir al usuario ingresar un nuevo texto para la respuesta
+            let nuevoTextoRespuesta = prompt("Ingrese el nuevo texto para la respuesta: ", respuesta.texto_respuesta);
+            let nuevaEsCorrecta = confirm("¿Es esta respuesta correcta?");
+
+            cambios.respuesta = {
+                id_respuesta: respuesta.id_respuesta,
+                texto_respuesta: nuevoTextoRespuesta,
+                es_correcta: nuevaEsCorrecta
+            };
+
+            // Actualizar el texto y la corrección de la respuesta en el objeto original
+            respuesta.texto_respuesta = nuevoTextoRespuesta;
+            respuesta.es_correcta = nuevaEsCorrecta;
+
+            return respuesta;
+        }
+    }
+    console.log("Respuesta no encontrada");
+    return null;
+}
+
+async function UpdateQuestions() {
+    try {
+        const response = await fetch(UrlQuestionGetId, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_examen: 4 })
+        });
+        const result = await response.json();
+        if (!result.success) {
+            console.log(result.message);
+        } else {
+            let data = JSON.parse(result.data.contenido).preguntas; // Asegúrate de acceder correctamente al array de preguntas
+           
+            let update = prompt("Ingrese código de la pregunta: ");
+            let updateId = parseInt(update);  // Convierte update a un número
+            let cambios = {};  // Definir el objeto cambios
+            buscar(data, updateId, cambios);
+            console.log(cambios);
+
+            // Crear un diccionario de cambios para enviar a la API
+            let updatedData = {
+                id_examen: 4,
+                contenido: JSON.stringify({ preguntas: data })
+            };
+
+            // Enviar los cambios a la API
+            const updateResponse = await fetch(UrlQuestionUpdate, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(updatedData)
+            });
+
+            const updateResult = await updateResponse.text();
+            console.log(updateResult);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+
+async function RequestAnswer(){   
+        try {
+            const reponse = await fetch(UrlAnswerJson);
+            const result = await reponse.text()
+            //console.log(result)
+            InsertAnswer(result);
+            
+        } catch (error) {
+            console.log(error)
+            
+        }
+
+}
+
+async function InsertAnswer(data){    
+   try {
+    const response = await fetch(UrlAnswerInsert, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({id_estudiante:2,id_examen: 5, data:data})
+            });
+            const result = await response.text();
+            console.log(result);
+    
+   } catch (error) {
+     console.log(error)
+    
+   }
+}
+async function ChatGptSend() {
+    let msg = prompt('Envia mensaje a chat GPT');
+    try {
+        const response = await fetch(UrlChatGpt4IA, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ send: msg })
+        });
+
+        const result = await response.text(); // Cambiar a `.json()` para manejar JSON
+        console.log(result);
+
+        if (result.success) {
+            console.log('Respuesta de ChatGPT:', result.data);
+        } else {
+            console.error('Error:', result.message);
+        }
+        
+    } catch (error) {
+        console.error('Error de red:', error);
+    }
+}
+
+async function Sms() {
+    let msg = prompt('Envia mensaje a sms: ');
+    let num = prompt('Ingrese numero de telefono: ');
+    let number = '57' + num;
+
+    try {
+        const response = await fetch(UrlSms, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ send: msg, number: number })
+        });
+
+        const result = await response.json();
+        if (result.status === '1x000') {
+            console.log('Mensaje enviado a ' + number);
+        } else {
+            console.log('Error al enviar', result.status);
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
 
 
 // ---------------------  usuario ----------------------------
@@ -326,8 +580,31 @@ async function load() {
 
 // --------------------------- contenido -------------------------
 //InsertContent();
-load();
+//load();
 // ---------------------------end contenido -------------------------
 
+
+// --------------------------- examen -------------------------
+
+//InsertQuestionData()
+//allQuestions();
+//DeleteQuestion();
+//SearchQuestion();
+//UpdateQuestions();
+
+// -------------------- end examen -------------------------------
+
+
+// ------------------- respuesta estudiante ------------------------
+//RequestAnswer();
+// ------------------- end respuesta estudiante ----------------------
+
+//--------------------------------IA--------------------------------------
+//ChatGptSend();
+//------------------------------End IA--------------------------------------
+
+//--------------------------------SMS---------------------------------------
+Sms()
+//---------------------------- End SMS---------------------------------------
 
 

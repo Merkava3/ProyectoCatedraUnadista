@@ -1,4 +1,4 @@
-/* -------- Usuarios ------*/ 
+/* -------- -----------Usuarios ------------------------------*/ 
 export const UrlUserInsert = 'index.php?url=user/crear';
 export const UrlUserUpdate = 'index.php?url=user/update';
 export const UrlUserDelete = 'index.php?url=user/delete';
@@ -12,7 +12,36 @@ export const UrlUserSesion = 'index.php?url=user/users';
 // http://localhost/ProyectoCatedraUnadista/public/index.html
 /* -------------------end usuarios---------------------------- */
 
-/* --------------------------contenido-------------------------------*/
+/* ----------------------------contenido------------------------*/
 export const UrlContentUpdate = "index.php?url=Content/update";
 export const UrlContentLoad = "index.php?url=Content/load";
-/* --------------------------end contenido---------------------------*/
+/* --------------------------End contenido----------------------*/
+
+/* ---------------------------- Question -----------------------*/
+export const UrlQuestionInsert = "index.php?url=Question/crear";
+export const UrlQuestionAll = "index.php?url=Question/all";
+export const UrlQuestionDelete = "index.php?url=Question/delete";
+export const UrlQuestionGetId = "index.php?url=Question/getid";
+export const UrlQuestionUpdate = "index.php?url=Question/update";
+/* ----------------------------End Question --------------------*/
+
+/* ---------------------------- Answer -------------------------*/
+export const UrlAnswerInsert = "index.php?url=Answer/crear";
+export const UrlAnswerAll = "index.php?url=Answer/all";
+export const UrlAnswerDelete = "index.php?url=Answer/delete";
+/* ---------------------------end Answer ---------------------*/
+
+/*---------------------------------- json ---------------------*/
+export const Urljson = "./data/Question.json";
+export const UrlAnswerJson = "./data/Answer.json";
+/*---------------------------------- end json ----------------------------*/
+
+/* ------------------------------- Reques Api ---------------------------------------*/
+
+export const UrlChatGpt4IA = "index.php?url=IA/ChatGpt4";
+export const UrlSms = "index.php?url=Sms/SendSms"
+/* ------------------------------- End Reques Api ---------------------------------------*/
+
+
+
+

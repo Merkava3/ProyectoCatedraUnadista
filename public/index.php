@@ -3,7 +3,7 @@
 require_once __DIR__ . '/../app/lib/core.php';
 require_once '../app/autoload.php';
 // Incluir el archivo de inicialización para cargar configuraciones y funciones comunes
-require_once '../app/init.php';
+require_once __DIR__ . '/../app/init.php';
 
 
 // Función para cargar automáticamente los controladores
