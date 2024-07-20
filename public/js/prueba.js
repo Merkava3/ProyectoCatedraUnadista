@@ -213,6 +213,7 @@ async function update() {
             const result = await response.json();            
             if(result.success){
                 console.log(result.message);
+                //logout();
             }
             
         } catch (error) {
@@ -273,7 +274,7 @@ async function login() {
         alert('Ocurrió un error durante el inicio de sesión.');
     }
 
-    //logout();
+    logout();
 }
 
 
