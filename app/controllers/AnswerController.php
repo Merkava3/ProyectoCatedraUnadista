@@ -8,6 +8,7 @@ require_once '../app/models/DynamicQuery.php';
 require_once '../app/helpers/DataValidator.php'; 
 require_once '../app/helpers/Helper.php'; 
 require_once '../app/Models/QueryInnerjoin.php'; 
+require_once 'UserController.php';
 
 
 class AnswerController{
@@ -19,6 +20,7 @@ class AnswerController{
     }
 
     public static function crear() {
+        UserController::verificarSesion();
         self::init();
         global $QueryExamen;
 

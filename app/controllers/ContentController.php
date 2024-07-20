@@ -6,6 +6,9 @@ use Models\DynamicQuery;
 require_once '../app/models/DynamicQuery.php';
 require_once '../app/helpers/DataValidator.php'; 
 require_once '../app/helpers/Helper.php'; 
+require_once 'UserController.php';
+
+
 
 class ContentController{
     private static $Query;
@@ -16,17 +19,11 @@ class ContentController{
 
 
 
-    public static function verificarSesion() {
-        session_start();
-        if (!isset($_SESSION['user'])) {
-            header('Location: index.html');
-            exit;
-        }
-    }
+    
 
 
 public static function update() {
-    // Inicialización y configuración inicial
+    UserController::verificarSesion();
     self::init();
     header('Content-Type: application/json');
 
@@ -71,7 +68,7 @@ public static function update() {
 
 
 public static function load(){
-    //self::verificarSesion();
+    UserController::verificarSesion();
     self::init();
     $name = 'id_usuario_contenido';
     header('Content-Type: application/json');

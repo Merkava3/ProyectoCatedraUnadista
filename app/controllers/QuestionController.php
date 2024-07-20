@@ -5,7 +5,8 @@ use Models\DynamicQuery;
    
 require_once '../app/models/DynamicQuery.php';
 require_once '../app/helpers/DataValidator.php'; 
-require_once '../app/helpers/Helper.php'; 
+require_once '../app/helpers/Helper.php';
+require_once 'UserController.php';
 
 class QuestionController{
 
@@ -15,7 +16,8 @@ class QuestionController{
         self::$Query = new DynamicQuery("examen");
     }
 
-    public static function crear(){       
+    public static function crear(){  
+        UserController::verificarSesion();     
         self::init();
         header('Content-Type: application/json');
         $input = file_get_contents("php://input");
@@ -50,7 +52,7 @@ class QuestionController{
     }
 
     public static function all() {
-        //self::verificarSesion();
+        UserController::verificarSesion();
         self::init();
         $responseData= self::$Query->get();        
         echo json_encode($responseData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
@@ -58,7 +60,7 @@ class QuestionController{
     }
 
     public static function delete(){       
-        //self::verificarSesion();
+        UserController::verificarSesion();
         self::init();
         header('Content-Type: application/json');
         $input = file_get_contents("php://input");
@@ -80,6 +82,7 @@ class QuestionController{
     }
 
     public function getid(){
+        UserController::verificarSesion();
         self::init();
         header('Content-Type: application/json');
         $input = file_get_contents("php://input");
@@ -103,6 +106,7 @@ class QuestionController{
     }
 
     public function update(){
+        UserController::verificarSesion();
         self::init();
         header('Content-Type: application/json');
         $input = file_get_contents("php://input");
