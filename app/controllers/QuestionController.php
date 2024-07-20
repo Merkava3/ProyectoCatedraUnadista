@@ -15,8 +15,7 @@ class QuestionController{
         self::$Query = new DynamicQuery("examen");
     }
 
-    public static function crear(){
-        //self::verificarSesion();
+    public static function crear(){       
         self::init();
         header('Content-Type: application/json');
         $input = file_get_contents("php://input");

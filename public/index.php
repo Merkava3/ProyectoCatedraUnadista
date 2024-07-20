@@ -1,7 +1,8 @@
+
 <?php
 // Cargar el archivo autoload.php para la carga automática de clases
 require_once __DIR__ . '/../app/lib/core.php';
-require_once '../app/autoload.php';
+require_once __DIR__ . '/../app/autoload.php';
 // Incluir el archivo de inicialización para cargar configuraciones y funciones comunes
 require_once __DIR__ . '/../app/init.php';
 
@@ -56,12 +57,12 @@ if (file_exists($controllerPath)) {
     } else {
         // Clase del controlador no encontrada
         echo "Clase del controlador $controllerName no encontrada<br>";
-        require_once '../app/views/error404.html';
+        //require_once '../app/views/error404.html';
     }
 } else {
     // Archivo del controlador no encontrado
     echo "Archivo del controlador $controllerName no encontrado en $controllerPath<br>";
-    require_once '../app/views/error404.html';
+    //require_once '../app/views/error404.html';
 }
 /* 
 Funciones rtrim() y explode():
@@ -129,5 +130,3 @@ Funciones internas y anónimas: PHP ofrece funciones internas, como echo y print
 
 
 ?>
-
-

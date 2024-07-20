@@ -1,5 +1,5 @@
 <?php
-namespace Models;
+namespace models;
 
 use models\Conexion;
 use models\DataAccessInterface;

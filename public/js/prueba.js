@@ -17,7 +17,8 @@ import {
     UrlAnswerJson,
     UrlAnswerInsert,
     UrlChatGpt4IA,
-    UrlSms
+    UrlSms,
+    UrlUserLogout
 } from "./const.js";
 
 /* -------------------------------------- usuario ----------------------------- */
@@ -29,12 +30,24 @@ async function crear_usuario() {
     let correo = prompt("Ingrese el Correo : ");
     let tipo_usuario = prompt("Ingrese tipo de usuario ");
     let pws = prompt("Ingrese la contraseña : ");
+    
 
     try {
+        let datos = {
+            identificacion: "123456789",
+            nombre: "Juan",
+            apellido: "Perez",
+            genero: "Masculino",
+            correo: "juanperez@gmail.com",
+            tipo_usuario: "Estudiante",
+            pws: "123456789"
+            }
+       
+    
         const response = await fetch(UrlUserInsert, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ indentificacion, nombre, apellido, genero, correo, tipo_usuario, pws })
+            body: JSON.stringify({ datos })
         });
 
         if (!response.ok) {
@@ -76,6 +89,7 @@ async function crear_usuario() {
         console.error('Hubo un problema con la solicitud Fetch:', error);
     }
 }
+
 
 async function GetAll(){    
     try {
@@ -164,6 +178,7 @@ async function getIdUpdate(){
         });
 
         const result = await response.json();       
+          
         if (result.success) {
             list = {"successfulness": true, id_usuario: id_usuario, "collection": result.data};
         } else {
@@ -177,27 +192,28 @@ async function getIdUpdate(){
 } 
 
 async function update() {
-    const list = await getIdUpdate(); // Espera a que getIdUpdate termine y obtiene su resultado
-   
+    const list = await getIdUpdate(); // Espera a que getIdUpdate termine y obtiene su resultado  
     if(list.successfulness){        
-        console.log("Datos obtenidos para la actualización:", list.collection);
-        try {
-            let id_usuario = list.id_usuario;       
-            let indentificacion = prompt("Ingrese identificacion :");
-            let nombre = prompt("Ingrese nombre : ");
-            let apellido = prompt("Ingrese Apellido : ");
-            let genero = prompt("Ingrese genero : ");
-            let correo = prompt("Ingrese el Correo : ");
-            let tipo_usuario = prompt("Ingrese tipo de usuario ");
-            let pws = prompt("Ingrese la contraseña : ");
+        //console.log("Datos obtenidos para la actualización:", list.collection);
+        try {          
 
             const response = await fetch(UrlUserUpdate, {
-                method: 'PUT', // Cambia el método a POST
+                method: 'POST', 
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({id_usuario, indentificacion, nombre, apellido, genero, correo, tipo_usuario, pws })
+                body: JSON.stringify({
+                     id_usuario: 2, 
+                        indentificacion: "1100678901", 
+                        nombre: "valentina", 
+                        apellido: "silva", 
+                        correo: "lennzoferrari@hotmail.com", 
+                        genero: "Masculino",
+                        tipo_usuario: "Estudiante",
+                        pws:"Dimichev3." })
             });
-            const resultText = await response.text();
-            console.log("Texto de respuesta:", resultText);
+            const result = await response.json();            
+            if(result.success){
+                console.log(result.message);
+            }
             
         } catch (error) {
             console.error('Hubo un problema con la solicitud Fetch:', error);
@@ -206,32 +222,60 @@ async function update() {
         console.log("No se encontraron datos para la actualización", list);
     }
 }
+async function logout(){
+    try {
+        const response = await fetch(UrlUserLogout, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'logout' })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            console.log(result.message);
+            // Redirigir al usuario a la página de inicio de sesión u otra página
+            //window.location.href = '../pages/login.html';
+            console.log("Salimos")
+        } else {
+            console.log('Error al cerrar sesión:', result.message);
+        }
+        
+    } catch (error) {
+        console.error('Error en la solicitud de logout:', error);
+    }
 
-async function login() {
-    let correo = prompt("Ingrese el correo : ");
-    let pws = prompt("Ingrese la contraseña : ");
+
+}
+async function login() {    
     try {
         const response = await fetch(UrlUserLogin, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ correo, pws })
+            body: JSON.stringify({ correo: "lszondas@gmail.com", pws: "Dimichev3." })
         });
-        const result = await response.text();
-        console.log(result);
-        /*
+        
+        // Asegurarse de que la respuesta se parsea como JSON
+        const result = await response.json();         
+        
         if (result.success) {
-            console.log("Bienvenido", result);
-            window.location.href = result.pages; // Redirige a la página principal o a la página correspondiente
+            console.log("Bienvenido");
+            //window.location.href = result.pages;
+            console.log(result.pages);            
+            update();    
         } else {
             console.log(result.message);
-            alert('Inicio de sesión fallido. Verifique sus credenciales.');
+            console.log('Inicio de sesión fallido. Verifique sus credenciales.');
         }
-        */
+        
     } catch (error) {
         console.error('Error en la solicitud:', error);
         alert('Ocurrió un error durante el inicio de sesión.');
     }
+
+    //logout();
 }
+
 
 async function UserSesion() {
     try {
@@ -567,16 +611,18 @@ async function Sms() {
 
 
 // ---------------------  usuario ----------------------------
-//crear_usuario(); // arreglar insert
-//update();
+//crear_usuario();
 //GetAll();
 //GetId();
 //Delete();
-//getIdUpdate();
 //update();
-//login();
-//UserSesion();
+//getIdUpdate();
 // --------------------- end usuario ----------------------------
+
+// --------------------- login usuario ----------------------------
+//login();
+// --------------------- end login usuario ----------------------
+
 
 // --------------------------- contenido -------------------------
 //InsertContent();
@@ -604,7 +650,7 @@ async function Sms() {
 //------------------------------End IA--------------------------------------
 
 //--------------------------------SMS---------------------------------------
-Sms()
+//Sms()
 //---------------------------- End SMS---------------------------------------
 
 

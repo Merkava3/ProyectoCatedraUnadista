@@ -1,5 +1,5 @@
 /* -------- -----------Usuarios ------------------------------*/ 
-export const UrlUserInsert = 'index.php?url=user/crear';
+export const UrlUserInsert = 'index.php?url=User/crear';
 export const UrlUserUpdate = 'index.php?url=user/update';
 export const UrlUserDelete = 'index.php?url=user/delete';
 export const UrlUserAll = 'index.php?url=user/all';
