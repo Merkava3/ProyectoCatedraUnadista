@@ -16,7 +16,7 @@ class DynamicQuery extends DatabaseHandler {
     }
 
     public function obtenerTodos() {
-        $query = "SELECT * FROM {$this->table}";
+        $query = QueryBuilder::QueryGetAll($this->table);
         $result = mysqli_query($this->conexion, $query);
         
         if ($result) {
@@ -31,7 +31,7 @@ class DynamicQuery extends DatabaseHandler {
     }
 
     public function get(){
-        $query = "SELECT * FROM {$this->table}";
+        $query = QueryBuilder::QueryGetAll($this->table);
         $result = mysqli_query($this->conexion, $query);
         if ($result) {
             $data = $this->fetchResults($result);           
@@ -46,13 +46,8 @@ class DynamicQuery extends DatabaseHandler {
     }
 
     public function obtenerPorId($datos) {
-        $column = implode(", ", array_keys($datos));
-        $params = array_values($datos);
-        $types = 's';
-        $query = "SELECT * FROM {$this->table} WHERE {$column} = ?";
-    
-        list($success, $stmtOrError) = $this->prepareAndExecute($query, $types, $params);
-    
+        list($params,$query ) = QueryBuilder::GetId($this->table, $datos);    
+        list($success, $stmtOrError) = $this->prepareAndExecute($query, 's', $params);    
         if ($success) {
             $result = $stmtOrError->get_result();
             $data = mysqli_fetch_assoc($result);
@@ -109,7 +104,8 @@ class DynamicQuery extends DatabaseHandler {
         $this->cerrarConexion();
     }
 
-    public function login($data) {      
+    public function login($data) {  
+        global  $insertSesion;
         list($sql, $params) = QueryBuilder::GetLogin($this->table, $data);           
         list($success, $stmtOrError) = $this->prepareAndExecute($sql, 's', [$params[0]]);
         
@@ -129,7 +125,7 @@ class DynamicQuery extends DatabaseHandler {
                     $_SESSION['user'] = $user[0];
     
                     // Insertar registro en la tabla sesion
-                    $insertQuery = "INSERT INTO sesion (fecha_sesion, estado, sesion_usuario) VALUES (NOW(), TRUE, ?)";
+                    $insertQuery = $insertSesion;
                     $insertParams = [$user[0]['id_usuario']];
                     list($insertSuccess, $insertStmtOrError) = $this->prepareAndExecute($insertQuery, 'i', $insertParams);
     
@@ -161,7 +157,9 @@ class DynamicQuery extends DatabaseHandler {
     
 
     public function actualizarEstadoSesion($userId) {
-        $query = "UPDATE sesion SET estado = FALSE WHERE sesion_usuario = ? AND estado = TRUE";
+        //  "UPDATE sesion SET estado = FALSE WHERE sesion_usuario = ? AND estado = TRUE"
+        global $querySession;
+        $query =  $querySession;
         $params = [$userId];
         return $this->prepareAndExecute($query, 'i', $params);
     }  

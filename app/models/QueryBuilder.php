@@ -13,6 +13,19 @@ class QueryBuilder {
         return $sql;
     }
 
+    public static function GetId($table,$datos){
+        $column = implode(", ", array_keys($datos));
+        $params = array_values($datos);
+        $query = "SELECT * FROM {$table} WHERE {$column} = ?";
+        return [$params, $query];
+
+    }
+
+    public static function QueryGetAll($table){
+        $sql = "SELECT * FROM {$table}";
+        return $sql;
+    }
+
     public static function QueryDelete($table, $datos){
         $sql ="";
         $column = implode(", ", array_keys($datos));

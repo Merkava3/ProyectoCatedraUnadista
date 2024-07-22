@@ -4,4 +4,5 @@ $Querycontenido = "select contenido_sobre,nuestro_servicio,portafolio from conte
 $QueryExamen = "select id_examen, contenido from examen";
 $querySession = "UPDATE sesion SET estado = FALSE WHERE sesion_usuario = ? AND estado = TRUE";
 $insertSesion = "INSERT INTO sesion (fecha_sesion, estado, sesion_usuario) VALUES (NOW(), TRUE,?)";
+
 ?>
