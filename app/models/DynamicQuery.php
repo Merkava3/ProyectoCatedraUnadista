@@ -3,6 +3,8 @@ namespace models;
 
 require_once 'QueryInnerjoin.php';
 require_once 'DatabaseHandler.php';
+require_once 'QueryBuilder.php';
+
 
 use helpers\Helper;
 
@@ -15,8 +17,9 @@ class DynamicQuery extends DatabaseHandler {
     }
 
     public function obtenerTodos() {
-        $query = "SELECT * FROM {$this->table}";
+        $query = QueryBuilder::QueryGetAll($this->table);
         $result = mysqli_query($this->conexion, $query);
+        
         if ($result) {
             $data = $this->fetchResults($result);
             $data = Helper::excludePassword($data);
@@ -28,14 +31,24 @@ class DynamicQuery extends DatabaseHandler {
         return $response;
     }
 
+    public function get(){
+        $query = QueryBuilder::QueryGetAll($this->table);
+        $result = mysqli_query($this->conexion, $query);
+        if ($result) {
+            $data = $this->fetchResults($result);           
+            $response = ['success' => true, 'data' => $data];
+        } else {
+            $response = ['success' => false, 'error' => mysqli_error($this->conexion)];
+        }
+        $this->cerrarConexion();
+        return $response;
+
+
+    }
+
     public function obtenerPorId($datos) {
-        $column = implode(", ", array_keys($datos));
-        $params = array_values($datos);
-        $types = 's';
-        $query = "SELECT * FROM {$this->table} WHERE {$column} = ?";
-    
-        list($success, $stmtOrError) = $this->prepareAndExecute($query, $types, $params);
-    
+        list($params,$query ) = QueryBuilder::GetId($this->table, $datos);    
+        list($success, $stmtOrError) = $this->prepareAndExecute($query, 's', $params);    
         if ($success) {
             $result = $stmtOrError->get_result();
             $data = mysqli_fetch_assoc($result);
@@ -58,43 +71,16 @@ class DynamicQuery extends DatabaseHandler {
         if (isset($datos['pws'])) {
             $datos['pws'] = Helper::EncriptarPws($datos['pws']);
         }
-        return $this->insert($this->table, $datos);
+        return $this->insert($datos);
     }
 
     public function actualizar($datos) {
         // Encontrar la clave del identificador de forma dinámica
-        $idKey = null;
-        foreach ($datos as $key => $value) {
-            if (strpos($key, 'id_') === 0) {
-                $idKey = $key;
-                break;
-            }
-        }
-    
-        if (!$idKey) {
-            return ['success' => false, 'message' => 'No se encontró una clave de identificación válida'];
-        }
-    
-        // Separar el identificador del resto de los datos
-        $id = $datos[$idKey];
-        unset($datos[$idKey]);
-    
-        // Encriptar la contraseña si existe
-        if (isset($datos['pws'])) {
-            $datos['pws'] = Helper::EncriptarPws($datos['pws']);
-        }
-    
-        // Construir la consulta SQL
-        $columns = implode(" = ?, ", array_keys($datos)) . " = ?";
-        $tipos = str_repeat('s', count($datos)) . 'i';
-        $values = array_values($datos);
-        $values[] = $id;
-    
-        $query = "UPDATE {$this->table} SET $columns WHERE $idKey = ?";
-    
+        $sql = "";           
+        list($sql, $values) = QueryBuilder::QueryUpdate($this->table, $datos);        
         // Ejecutar la consulta
-        list($success, $stmtOrError) = $this->prepareAndExecute($query, $tipos, $values);
-    
+        $tipos = str_repeat('s', count($values) - 1) . 'i';    
+        list($success, $stmtOrError) = $this->prepareAndExecute($sql, $tipos, $values);    
         if ($success) {
             return ['success' => true, 'message' => 'Actualización exitosa'];
         } else {
@@ -106,13 +92,11 @@ class DynamicQuery extends DatabaseHandler {
     
 
     public function eliminar($datos) {
-        $column = implode(", ", array_keys($datos));
-        $query = "DELETE FROM {$this->table} WHERE {$column} = ?";
+        $sql = "";        
         $types = 's'; // Cambiar 's' por el tipo correcto según el tipo de dato de la columna
-        $params = array_values($datos);
-    
-        list($success, $stmtOrError) = $this->prepareAndExecute($query, $types, $params);
-    
+        $params = array_values($datos); 
+        $sql = QueryBuilder::QueryDelete($this->table, $datos);   
+        list($success, $stmtOrError) = $this->prepareAndExecute($sql, $types, $params);    
         if ($success) {
             return ['success' => true, 'message' => 'Eliminación exitosa'];
         } else {
@@ -121,16 +105,10 @@ class DynamicQuery extends DatabaseHandler {
         $this->cerrarConexion();
     }
 
-    public function login($data) {
-        // Extraer los campos y valores
-        $columns = array_keys($data);  
-        $params = array_values($data); 
-        
-        // Crear la consulta SQL
-        $query = "SELECT * FROM {$this->table} WHERE {$columns[0]} = ?";
-        
-        // Ejecutar la consulta
-        list($success, $stmtOrError) = $this->prepareAndExecute($query, 's', [$params[0]]);
+    public function login($data) {  
+        global  $insertSesion;
+        list($sql, $params) = QueryBuilder::GetLogin($this->table, $data);           
+        list($success, $stmtOrError) = $this->prepareAndExecute($sql, 's', [$params[0]]);
         
         if ($success) {
             // Obtener el resultado de la consulta
@@ -148,7 +126,7 @@ class DynamicQuery extends DatabaseHandler {
                     $_SESSION['user'] = $user[0];
     
                     // Insertar registro en la tabla sesion
-                    $insertQuery = "INSERT INTO sesion (fecha_sesion, estado, sesion_usuario) VALUES (NOW(), TRUE,?)";
+                    $insertQuery = $insertSesion;
                     $insertParams = [$user[0]['id_usuario']];
                     list($insertSuccess, $insertStmtOrError) = $this->prepareAndExecute($insertQuery, 'i', $insertParams);
     
@@ -158,9 +136,9 @@ class DynamicQuery extends DatabaseHandler {
     
                     // Determinar la página de redirección según el tipo de usuario
                     if ($user[0]['tipo_usuario'] === 'Tutor') {
-                        return ['success' => true, 'data' => $user[0], "pages" => "dashboard_tutor.html"];
+                        return ['success' => true, 'data' => $user[0], 'pages' => 'dashboard_tutor.html'];
                     } else {
-                        return ['success' => true, 'data' => $user[0], "pages" => "dashboard_estudiante.html"];
+                        return ['success' => true, 'data' => $user[0], 'pages' => 'dashboard_estudiante.html'];
                     }
                 } else {
                     return ['success' => false, 'message' => 'Credenciales incorrectas'];
@@ -171,30 +149,28 @@ class DynamicQuery extends DatabaseHandler {
         } else {
             return ['success' => false, 'message' => 'Error en la consulta: ' . $stmtOrError];
         }
-        
+    
         // Cerrar la conexión
         $this->cerrarConexion();
     }
     
 
+    
+
     public function actualizarEstadoSesion($userId) {
-        $query = "UPDATE sesion SET estado = FALSE WHERE sesion_usuario = ? AND estado = TRUE";
+        //  "UPDATE sesion SET estado = FALSE WHERE sesion_usuario = ? AND estado = TRUE"
+        global $querySession;
+        $query =  $querySession;
         $params = [$userId];
         return $this->prepareAndExecute($query, 'i', $params);
-    }
+    }  
     
 
-    
-    
-
-    private function insert($tabla, $datos) {
-        $columns = implode(", ", array_keys($datos));
-        $placeholders = implode(", ", array_fill(0, count($datos), '?'));
-        $tipos = str_repeat('s', count($datos));
-        $query = "INSERT INTO $tabla ($columns) VALUES ($placeholders)";
-
+    private function insert($datos) {       
+        $tipos = str_repeat('s', count($datos));        
+        $sql = QueryBuilder::QueryInsert($this->table, $datos);
         try {
-            list($success, $stmtOrError) = $this->prepareAndExecute($query, $tipos, array_values($datos));           
+            list($success, $stmtOrError) = $this->prepareAndExecute($sql, $tipos, array_values($datos));           
             if ($success) {
                 return ['success' => true, 'id' => mysqli_stmt_insert_id($stmtOrError)];
             } else {
@@ -212,7 +188,56 @@ class DynamicQuery extends DatabaseHandler {
         $this->cerrarConexion();
     }
 
-    public function executeQuery($query, $types = '', $params = []) {
+    public function insertStudentWithProgram($data) {          
+        try {
+            if (isset($data['pws'])) {
+                $data['pws'] = Helper::EncriptarPws($data['pws']);
+            }    
+            list($usuarioData, $programaData) = Helper::Build_student_program_tables($data);    
+            // Construir la consulta para la tabla usuario
+            $queryUsuario = QueryBuilder::QueryInsert('usuario', $usuarioData);
+            $paramsUsuario = array_values($usuarioData);
+            $typesUsuario = str_repeat('s', count($paramsUsuario));
+    
+            list($success, $stmt) = $this->prepareAndExecute($queryUsuario, $typesUsuario, $paramsUsuario);
+    
+            if (!$success) {
+                throw new \Exception($stmt);
+            }
+    
+            $id_usuario = mysqli_stmt_insert_id($stmt);    
+            
+            // Añadir el id_usuario al programaData
+            $programaData['programa_usuario'] = $id_usuario;
+    
+            $queryPrograma = QueryBuilder::QueryInsert('programa', $programaData);
+            $paramsPrograma = array_values($programaData);
+            $typesPrograma = 'si';
+    
+            list($success, $stmt) = $this->prepareAndExecute($queryPrograma, $typesPrograma, $paramsPrograma);
+    
+            if (!$success) {
+                throw new \Exception($stmt);
+            }
+    
+            $this->conexion->commit();
+            return ['success' => true];
+            
+        } catch (\Exception $e) {
+            $this->conexion->rollback();
+            return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+        } finally {
+            $this->cerrarConexion();
+        }
+    }
+    
+
+  
+
+    
+    
+
+    private function executeQuery($query, $types = '', $params = []) {
         list($success, $stmtOrError) = $this->prepareAndExecute($query, $types, $params);
         if ($success) {
             if (strpos(trim(strtoupper($query)), 'SELECT') === 0) {
@@ -227,9 +252,10 @@ class DynamicQuery extends DatabaseHandler {
         $this->cerrarConexion();
     }
 
-    
-
-    
+    public function executeQuerysAll ($consulta){       
+    return $this->executeQuery($consulta); 
+    }
+        
     private function fetchResults($result) {
         $data = [];
         while ($row = mysqli_fetch_assoc($result)) {

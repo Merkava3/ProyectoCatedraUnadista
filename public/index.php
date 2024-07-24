@@ -1,9 +1,11 @@
+
 <?php
 // Cargar el archivo autoload.php para la carga automática de clases
-require_once '../app/autoload.php';
-
+require_once __DIR__ . '/../app/lib/core.php';
+require_once __DIR__ . '/../app/autoload.php';
 // Incluir el archivo de inicialización para cargar configuraciones y funciones comunes
-require_once '../app/init.php';
+require_once __DIR__ . '/../app/init.php';
+
 
 // Función para cargar automáticamente los controladores
 spl_autoload_register(function ($class_name) {
@@ -11,18 +13,23 @@ spl_autoload_register(function ($class_name) {
     $class_path = '../app/controllers/' . $class_name . '.php';
     if (file_exists($class_path)) {
         require_once $class_path;
+        //echo "Controlador $class_name cargado desde $class_path<br>";
     }
 });
 
 // Obtener la URL solicitada
 $url = isset($_GET['url']) ? $_GET['url'] : 'user/index'; // Si no se especifica URL, se usa 'user/index' como default
+//echo "URL solicitada: $url<br>";
 
 // Dividir la URL en partes
 $urlParts = explode('/', rtrim($url, '/'));
+//echo "Partes de la URL: " . print_r($urlParts, true) . "<br>";
 
 // Obtener el nombre del controlador y el método
 $controllerName = ucfirst($urlParts[0]) . 'Controller';
 $methodName = isset($urlParts[1]) ? $urlParts[1] : 'index'; // Método por defecto es 'index'
+//echo "Nombre del controlador: $controllerName<br>";
+//echo "Nombre del método: $methodName<br>";
 
 // Ruta del controlador
 $controllerPath = '../app/controllers/' . $controllerName . '.php';
@@ -30,28 +37,33 @@ $controllerPath = '../app/controllers/' . $controllerName . '.php';
 // Verificar si el archivo del controlador existe y cargarlo
 if (file_exists($controllerPath)) {
     require_once $controllerPath;
+    //echo "Archivo del controlador $controllerName encontrado y cargado<br>";
 
     // Verificar si la clase del controlador existe
     if (class_exists($controllerName)) {
         $controller = new $controllerName();
+        //echo "Clase del controlador $controllerName instanciada<br>";
 
         // Verificar si el método existe en el controlador y llamarlo
         if (method_exists($controller, $methodName)) {
             // Llamar al método con los parámetros restantes de la URL
             call_user_func_array([$controller, $methodName], array_slice($urlParts, 2));
+            //echo "Método $methodName del controlador $controllerName llamado correctamente<br>";
         } else {
             // Método no encontrado
+            //echo "Método $methodName no encontrado en el controlador $controllerName<br>";
             require_once '../app/views/error404.html';
         }
     } else {
         // Clase del controlador no encontrada
-        require_once '../app/views/error404.html';
+        echo "Clase del controlador $controllerName no encontrada<br>";
+        //require_once '../app/views/error404.html';
     }
 } else {
     // Archivo del controlador no encontrado
-    require_once '../app/views/error404.html';
+    echo "Archivo del controlador $controllerName no encontrado en $controllerPath<br>";
+    //require_once '../app/views/error404.html';
 }
-
 /* 
 Funciones rtrim() y explode():
 Funcion rtrim($url, '/') :
@@ -114,6 +126,7 @@ Devolver valores: Las funciones pueden devolver valores que se pueden utilizar e
 Funciones internas y anónimas: PHP ofrece funciones internas, como echo y print, y también permite definir funciones anónimas, que se pueden utilizar en situaciones específicas
 
 */
+
+
+
 ?>
-
-

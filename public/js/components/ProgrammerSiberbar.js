@@ -21,11 +21,29 @@ function menuBtnChange() {
  }
 }
 
-function loadContent(page) {
-  fetch(page)
-    .then(response => response.text())
-    .then(content => {
-      document.getElementById("content").innerHTML = content;
-    })
-    .catch(error => console.error('Error al cargar el contenido:', error));
+async function loadContent(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const content = await response.text();
+    const contentDiv = document.getElementById("content");
+    contentDiv.innerHTML = content;
+    
+  } catch (error) {
+    console.error('Error loading content:', error);
+  }
 }
+
+// Carga el contenido inicial cuando el documento está completamente cargado
+document.addEventListener('DOMContentLoaded', () => loadContent('inicio.html'));
+
+
+
+
+
+
+
+
+

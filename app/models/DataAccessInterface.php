@@ -1,5 +1,6 @@
 <?php
 namespace models;
+
 interface DataAccessInterface{
     public function obtenerTodos();
     public function obtenerPorId($id);

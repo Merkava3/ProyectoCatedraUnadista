@@ -10,8 +10,27 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [L]
 
+# Permitir métodos HTTP POST, GET, PUT, DELETE, OPTIONS
+<Limit POST GET PUT DELETE OPTIONS>
+    Allow from all
+</Limit>
+
 # Proteger archivos sensibles
 <FilesMatch "\.(htaccess|htpasswd|ini|phar|sql|bak|config|inc|dist|psd|log|sh|kdb|db|tgz|bz2|zip|rar|tar)$">
     Order Allow,Deny
     Deny from all
 </FilesMatch>
+
+# Configuración adicional de seguridad
+# Bloquear acceso a archivos PHP en directorios específicos (si es necesario)
+<FilesMatch "\.(php|phar|phtml)$">
+    <If "-d %{REQUEST_FILENAME}">
+        Order Deny,Allow
+        Deny from all
+    </If>
+</FilesMatch>
+
+# Configurar el manejo de errores
+ErrorDocument 403 /error/403.html
+ErrorDocument 404 /error/404.html
+ErrorDocument 500 /error/500.html
