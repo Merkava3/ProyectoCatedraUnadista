@@ -18,20 +18,13 @@ import {
     UrlAnswerInsert,
     UrlChatGpt4IA,
     UrlSms,
-    UrlUserLogout
+    UrlUserLogout,
+    UrlCount,
+    UrlInsertStudent
 } from "./const.js";
 
 /* -------------------------------------- usuario ----------------------------- */
 async function crear_usuario() {
-    let indentificacion = prompt("Ingrese identificacion :");
-    let nombre = prompt("Ingrese nombre : ");
-    let apellido = prompt("Ingrese Apellido : ");
-    let genero = prompt("Ingrese genero : ");
-    let correo = prompt("Ingrese el Correo : ");
-    let tipo_usuario = prompt("Ingrese tipo de usuario ");
-    let pws = prompt("Ingrese la contraseña : ");
-    
-
     try {
         let datos = {
             identificacion: "123456789",
@@ -39,15 +32,15 @@ async function crear_usuario() {
             apellido: "Perez",
             genero: "Masculino",
             correo: "juanperez@gmail.com",
-            tipo_usuario: "Estudiante",
-            pws: "123456789"
+            tipo_usuario: "Tutor",
+            pws: "Dimichev3."
             }
        
     
         const response = await fetch(UrlUserInsert, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ datos })
+            body: JSON.stringify(datos)
         });
 
         if (!response.ok) {
@@ -87,6 +80,33 @@ async function crear_usuario() {
     } catch (error) {
         console.log(error);
         console.error('Hubo un problema con la solicitud Fetch:', error);
+    }
+}
+
+async function created_student(){
+    let datos = {
+            indentificacion: "1100891456",
+            nombre: "Lisa",
+            apellido: "Simpson",
+            genero: "Femenino",
+            correo: "lisa@gmail.com",
+            tipo_usuario: "Estudiante",
+            nombre_programa:"psicologia",            
+            pws: "Dimichev3."
+    }
+    try {
+        const response = await fetch(UrlInsertStudent,{
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(datos)            
+        })
+        const result = await response.text();
+        console.log(result);
+        
+    } catch (error) {
+        console.log(error);
+
+        
     }
 }
 
@@ -190,6 +210,20 @@ async function getIdUpdate(){
         console.error(error);
     }
 } 
+
+async function UsersCounts(){
+    try {
+        const response = await fetch(UrlCount, {
+            method: 'GET', // Cambia el método a POST
+            headers: { 'Content-Type': 'application/json' },            
+            
+        })
+        const result = await response.text();
+        console.log(result);
+    } catch (error) {
+        
+    }
+}
 
 async function update() {
     const list = await getIdUpdate(); // Espera a que getIdUpdate termine y obtiene su resultado  
@@ -613,11 +647,13 @@ async function Sms() {
 
 // ---------------------  usuario ----------------------------
 //crear_usuario();
+//created_student()
 //GetAll();
 //GetId();
 //Delete();
 //update();
 //getIdUpdate();
+//UsersCounts();
 // --------------------- end usuario ----------------------------
 
 // --------------------- login usuario ----------------------------

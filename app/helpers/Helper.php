@@ -39,6 +39,27 @@ public static function BuilQuery($data, $name){
     return $query;
 }
 
+public  static function Build_student_program_tables($data){
+     // Separar los datos del usuario y del programa
+     $usuarioData = [
+        'indentificacion' => $data['indentificacion'],
+        'nombre' => $data['nombre'],
+        'apellido' => $data['apellido'],
+        'genero' => $data['genero'],
+        'correo' => $data['correo'],
+        'tipo_usuario' => $data['tipo_usuario'],
+        'pws' => $data['pws']
+    ];
+
+    $programaData = [
+        'nombre_programa' => $data['nombre_programa']
+    ];
+
+    return [$usuarioData, $programaData];
+
+
+}
+
 
 
 public static function Calculate($Question, $Answer) {   

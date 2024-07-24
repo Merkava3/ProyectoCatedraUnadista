@@ -2,6 +2,7 @@
 use Models\DynamicQuery;
 require_once '../app/models/DynamicQuery.php';
 require_once '../app/helpers/DataValidator.php';
+require_once '../app/models/DynamicQuery.php';
 
 class UserController {
 
@@ -55,6 +56,45 @@ class UserController {
 
         echo json_encode($responseData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         exit;
+    }
+
+    public static function InsertStudent(){
+        self::init();
+        header('Content-Type: application/json');
+        $input = file_get_contents("php://input");
+        $data = json_decode($input, true);
+        
+        $validation = false;
+        $message = '';
+        $responseData = [];
+        
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            $message = 'Error al decodificar el JSON';
+            $responseData = ['success' => $validation, 'message' => $message, 'data' => null];
+        } else {
+            $errors = DataValidator::validateData($data);
+            if (!empty($errors)) {
+                $message = 'Datos inválidos';
+                $responseData = ['success' => $validation, 'message' => $message, 'errors' => $errors];
+            } elseif (empty($data) || self::arrayValuesEmpty($data)) {
+                $message = 'Datos vacíos';
+                $responseData = ['success' => $validation, 'message' => $message, 'data' => null];
+            } else {
+                $result = self::$Query->insertStudentWithProgram($data);
+                if ($result['success']) {
+                    $validation = true;
+                    $message = 'Datos recibidos y guardados';
+                } else {
+                    $message = $result['message'];
+                }
+                $responseData = ['success' => $validation, 'message' => $message, 'data' => null];
+            }
+        }
+
+        echo json_encode($responseData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        exit;
+        
     }
 
     public static function all() {
@@ -205,6 +245,18 @@ class UserController {
         exit;
     }
 
+    public static function UserCount(){
+        //self::verificarSesion();
+        global $QueryCountUser;
+        self::init();
+        $result = self::$Query->executeQuerysAll($QueryCountUser);        
+        echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        exit;
+        
+       
+
+    }
+
     private static function arrayValuesEmpty($array) {
         foreach ($array as $value) {
             if (!empty($value)) {
@@ -214,3 +266,5 @@ class UserController {
         return true;
     }
 }
+
+?>

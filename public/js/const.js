@@ -9,6 +9,8 @@ export const UrlUserLogin = 'index.php?url=user/login';
 export const UrlUserType = 'index.php?url=user/type';
 export const UrlUserLogout = 'index.php?url=user/logout';
 export const UrlUserSesion = 'index.php?url=user/users';
+export const UrlCount = "index.php?url=user/UserCount";
+export const UrlInsertStudent = 'index.php?url=user/InsertStudent';
 // http://localhost/ProyectoCatedraUnadista/public/index.html
 /* -------------------end usuarios---------------------------- */
 

@@ -5,6 +5,7 @@ require_once 'QueryInnerjoin.php';
 require_once 'DatabaseHandler.php';
 require_once 'QueryBuilder.php';
 
+
 use helpers\Helper;
 
 class DynamicQuery extends DatabaseHandler {
@@ -187,6 +188,55 @@ class DynamicQuery extends DatabaseHandler {
         $this->cerrarConexion();
     }
 
+    public function insertStudentWithProgram($data) {          
+        try {
+            if (isset($data['pws'])) {
+                $data['pws'] = Helper::EncriptarPws($data['pws']);
+            }    
+            list($usuarioData, $programaData) = Helper::Build_student_program_tables($data);    
+            // Construir la consulta para la tabla usuario
+            $queryUsuario = QueryBuilder::QueryInsert('usuario', $usuarioData);
+            $paramsUsuario = array_values($usuarioData);
+            $typesUsuario = str_repeat('s', count($paramsUsuario));
+    
+            list($success, $stmt) = $this->prepareAndExecute($queryUsuario, $typesUsuario, $paramsUsuario);
+    
+            if (!$success) {
+                throw new \Exception($stmt);
+            }
+    
+            $id_usuario = mysqli_stmt_insert_id($stmt);    
+            
+            // Añadir el id_usuario al programaData
+            $programaData['programa_usuario'] = $id_usuario;
+    
+            $queryPrograma = QueryBuilder::QueryInsert('programa', $programaData);
+            $paramsPrograma = array_values($programaData);
+            $typesPrograma = 'si';
+    
+            list($success, $stmt) = $this->prepareAndExecute($queryPrograma, $typesPrograma, $paramsPrograma);
+    
+            if (!$success) {
+                throw new \Exception($stmt);
+            }
+    
+            $this->conexion->commit();
+            return ['success' => true];
+            
+        } catch (\Exception $e) {
+            $this->conexion->rollback();
+            return ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+        } finally {
+            $this->cerrarConexion();
+        }
+    }
+    
+
+  
+
+    
+    
+
     private function executeQuery($query, $types = '', $params = []) {
         list($success, $stmtOrError) = $this->prepareAndExecute($query, $types, $params);
         if ($success) {
@@ -205,10 +255,7 @@ class DynamicQuery extends DatabaseHandler {
     public function executeQuerysAll ($consulta){       
     return $this->executeQuery($consulta); 
     }
-
-    
-
-    
+        
     private function fetchResults($result) {
         $data = [];
         while ($row = mysqli_fetch_assoc($result)) {

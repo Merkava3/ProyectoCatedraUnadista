@@ -1,17 +1,20 @@
 use catedra;
+select * from sesion;
+SELECT COUNT(*) AS total_estudiantes FROM usuario WHERE tipo_usuario = 'Estudiante';
 select * from usuario;
 create table usuario(
 id_usuario int auto_increment primary key not null,
 identifacion varchar(45) not null,
 nombre_usuario varchar(45) not null,
 apellido_usuario varchar(45) not null,
-genero enum("Masculino","Femenino") not null,
 correo varchar(80) not null,
 /* imagen blob not null, */
-contraseña varchar(16) not null
+pws varchar(16) not null,
+genero enum("Masculino","Femenino") not null,
+tipo_usuario enum("Tutor","Estudiante") 
 );
 SHOW TRIGGERS FROM catedra LIKE 'respuesta_estudiante';
-
+select * from sesion;
 select * from usuario;
 create table sesion(
 id_sesion int auto_increment primary key null,
@@ -20,6 +23,7 @@ estado tinyint not null,
 sesion_usuario int not null,
 foreign key(sesion_usuario) references usuario(id_usuario)
 );
+select * from contenido;
 create table contenido (
 id_contenido int auto_increment null primary key,
 contenido_sobre json not null,
@@ -37,7 +41,7 @@ CREATE TABLE examen (
     id_tutor INT NOT NULL,
     FOREIGN KEY (id_tutor) REFERENCES usuario(id_usuario)
 );
-select * from examen;
+select * from respuesta_estudiante;
 
 CREATE TABLE respuesta_estudiante (
     id_respuesta_estudiante INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
@@ -148,6 +152,14 @@ SET
     portafolio = '{"holas":"hola"}' 
 WHERE id_usuario_contenido = 91;
 
-UPDATE contenido SET contenido_sobre = ?, nuestro_servicio = ?, portafolio = ? WHERE id_usuario_contenido = ?
+UPDATE contenido SET contenido_sobre = ?, nuestro_servicio = ?, portafolio = ? WHERE id_usuario_contenido = ?;
+/* -----------------------------------------------------------------------------------------------------------*/
+create table programa(
+id_programa int   not null primary key auto_increment,
+nombre_programa varchar(45) not null,
+fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+programa_usuario int not null,
+foreign key(programa_usuario) references usuario (id_usuario)
+)
 
 
