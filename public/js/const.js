@@ -11,6 +11,9 @@ export const UrlUserLogout = 'index.php?url=user/logout';
 export const UrlUserSesion = 'index.php?url=user/users';
 export const UrlCount = "index.php?url=user/UserCount";
 export const UrlInsertStudent = 'index.php?url=user/InsertStudent';
+export const UrlOnlineUser = 'index.php?url=user/OnlineUser';
+export const UrlTableData = 'index.php?url=user/TableData';
+
 // http://localhost/ProyectoCatedraUnadista/public/index.html
 /* -------------------end usuarios---------------------------- */
 

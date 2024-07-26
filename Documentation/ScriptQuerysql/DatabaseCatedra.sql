@@ -15,10 +15,14 @@ tipo_usuario enum("Tutor","Estudiante")
 );
 SHOW TRIGGERS FROM catedra LIKE 'respuesta_estudiante';
 select * from sesion;
-select * from usuario;
+select * from usuario where  tipo_usuario = 'Estudiante' and 'lisa@gmail.com' ;
+
+select * from programa;
+drop table sesion;
+select * from sesion;
 create table sesion(
 id_sesion int auto_increment primary key null,
-fecha_sesion datetime not null,
+fecha_sesion TIMESTAMP DEFAULT CURRENT_TIMESTAMP not null,
 estado tinyint not null,
 sesion_usuario int not null,
 foreign key(sesion_usuario) references usuario(id_usuario)
@@ -161,5 +165,86 @@ fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 programa_usuario int not null,
 foreign key(programa_usuario) references usuario (id_usuario)
 )
+select * from usuario;
+select * from sesion;
+SELECT 
+    u.id_usuario,   
+    u.nombre,
+    u.apellido,
+    u.correo,   
+    s.fecha_sesion,
+    s.estado
+FROM 
+    usuario AS u
+INNER JOIN 
+    sesion AS s
+ON 
+    u.id_usuario = s.sesion_usuario
+WHERE 
+    u.tipo_usuario = 'Estudiante' AND s.estado = 1;
+    
+/* -------------------------------------------------------------------------------------------------------------------------------------------*/
+SELECT 
+    s.estado,
+    COUNT(u.id_usuario) AS cantidad_estudiantes
+FROM 
+    usuario AS u
+INNER JOIN 
+    sesion AS s
+ON 
+    u.id_usuario = s.sesion_usuario
+WHERE 
+    u.tipo_usuario = 'Estudiante'
+GROUP BY 
+    s.estado;
+/*---------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+SELECT 
+    CASE 
+        WHEN s.estado = 1 THEN 'Conectados'
+        ELSE 'No Conectados'
+    END AS estado_conexion,
+    COUNT(u.id_usuario) AS cantidad_estudiantes
+FROM 
+    usuario AS u
+INNER JOIN 
+    sesion AS s
+ON 
+    u.id_usuario = s.sesion_usuario
+WHERE 
+    u.tipo_usuario = 'Estudiante'
+GROUP BY 
+    s.estado;
+
+select u.id_usuario ,u.indentificacion, u.nombre, u.apellido, u.correo, s.fecha_sesion, s.estado from usuario AS u inner join sesion AS s on u.id_usuario = s.sesion_usuario where  u.tipo_usuario = 'Estudiante';
+select * from usuario;
+SELECT 
+    u.id_usuario,
+    u.indentificacion,
+    u.nombre AS nombre,
+    u.apellido AS apellido,
+    u.correo,
+    DATE_FORMAT(s.fecha_sesion, '%M %d %Y %r') AS fecha,
+    s.estado
+FROM 
+    usuario AS u
+INNER JOIN 
+    (SELECT 
+         sesion_usuario, 
+         MAX(fecha_sesion) AS fecha_sesion
+     FROM 
+         sesion
+     GROUP BY 
+         sesion_usuario
+    ) AS s_max 
+ON 
+    u.id_usuario = s_max.sesion_usuario
+INNER JOIN 
+    sesion AS s 
+ON 
+    s.sesion_usuario = s_max.sesion_usuario AND s.fecha_sesion = s_max.fecha_sesion
+WHERE 
+    u.tipo_usuario = 'Estudiante'
 
 

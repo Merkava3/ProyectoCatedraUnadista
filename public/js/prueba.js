@@ -296,8 +296,8 @@ async function login() {
         if (result.success) {
             console.log("Bienvenido");
             //window.location.href = result.pages;
-            console.log(result.pages);            
-            update();    
+            console.log(result.pages);           
+            
         } else {
             console.log(result.message);
             console.log('Inicio de sesión fallido. Verifique sus credenciales.');
@@ -657,7 +657,7 @@ async function Sms() {
 // --------------------- end usuario ----------------------------
 
 // --------------------- login usuario ----------------------------
-//login();
+login();
 // --------------------- end login usuario ----------------------
 
 

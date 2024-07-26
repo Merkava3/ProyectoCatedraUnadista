@@ -192,6 +192,7 @@ class UserController {
 
         $input = file_get_contents("php://input");
         $data = json_decode($input, true);
+    
 
         if (!isset($data['correo']) || !isset($data['pws'])) {
             echo json_encode(['success' => false, 'message' => 'Correo y contraseña son requeridos'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
@@ -207,7 +208,7 @@ class UserController {
             $_SESSION['user'] = $result['data'];
             $_SESSION['loggedin'] = true;
 
-            echo json_encode(['success' => true, 'pages' => 'dashboard_tutor.html'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+            echo json_encode(['success' => true, 'pages' => 'SibeBarMenu.html'], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         } else {
             echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         }
@@ -252,9 +253,24 @@ class UserController {
         $result = self::$Query->executeQuerysAll($QueryCountUser);        
         echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
         exit;
-        
-       
+    }
 
+    public static function OnlineUser(){
+        //self::verificarSesion();
+        global $Online_Count_student;
+        self::init();
+        $result = self::$Query->executeQuerysAll($Online_Count_student);
+        echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        exit;     
+
+    }
+    public static function TableData(){
+        //self::verificarSesion();
+        global $QueryTableData;
+        self::init();
+        $result = self::$Query->executeQuerysAll($QueryTableData);
+        echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        exit;
     }
 
     private static function arrayValuesEmpty($array) {

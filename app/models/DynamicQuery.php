@@ -16,10 +16,10 @@ class DynamicQuery extends DatabaseHandler {
         $this->table = $table;
     }
 
+    /* me traea todo los datos de la tabla */
     public function obtenerTodos() {
         $query = QueryBuilder::QueryGetAll($this->table);
-        $result = mysqli_query($this->conexion, $query);
-        
+        $result = mysqli_query($this->conexion, $query);        
         if ($result) {
             $data = $this->fetchResults($result);
             $data = Helper::excludePassword($data);
@@ -31,6 +31,7 @@ class DynamicQuery extends DatabaseHandler {
         return $response;
     }
 
+    /* ejecuta traer todos los datos siempre cuando no sea un usuario */
     public function get(){
         $query = QueryBuilder::QueryGetAll($this->table);
         $result = mysqli_query($this->conexion, $query);
@@ -45,7 +46,7 @@ class DynamicQuery extends DatabaseHandler {
 
 
     }
-
+  /* ejecuta Read por if */
     public function obtenerPorId($datos) {
         list($params,$query ) = QueryBuilder::GetId($this->table, $datos);    
         list($success, $stmtOrError) = $this->prepareAndExecute($query, 's', $params);    
@@ -65,7 +66,7 @@ class DynamicQuery extends DatabaseHandler {
         return $result;
     }
     
-
+  /* crea un nueva registro siempre cuando este un dato pws(password)*/
     public function created($datos) {
         // Encriptar la contraseña antes de guardar
         if (isset($datos['pws'])) {
@@ -74,6 +75,7 @@ class DynamicQuery extends DatabaseHandler {
         return $this->insert($datos);
     }
 
+    /* Ejucuta la consulta update */
     public function actualizar($datos) {
         // Encontrar la clave del identificador de forma dinámica
         $sql = "";           
@@ -90,7 +92,7 @@ class DynamicQuery extends DatabaseHandler {
     }
     
     
-
+/* ejecuta la consulta Delete */
     public function eliminar($datos) {
         $sql = "";        
         $types = 's'; // Cambiar 's' por el tipo correcto según el tipo de dato de la columna
@@ -105,6 +107,7 @@ class DynamicQuery extends DatabaseHandler {
         $this->cerrarConexion();
     }
 
+    /* realiza los consulta al login a la base de datos */
     public function login($data) {  
         global  $insertSesion;
         list($sql, $params) = QueryBuilder::GetLogin($this->table, $data);           
@@ -154,9 +157,7 @@ class DynamicQuery extends DatabaseHandler {
         $this->cerrarConexion();
     }
     
-
-    
-
+/* Ejeucta la actualiaciones de la sesiciones de lo usuarios*/
     public function actualizarEstadoSesion($userId) {
         //  "UPDATE sesion SET estado = FALSE WHERE sesion_usuario = ? AND estado = TRUE"
         global $querySession;
@@ -165,7 +166,7 @@ class DynamicQuery extends DatabaseHandler {
         return $this->prepareAndExecute($query, 'i', $params);
     }  
     
-
+/* ejecuta la conusltar insert */
     private function insert($datos) {       
         $tipos = str_repeat('s', count($datos));        
         $sql = QueryBuilder::QueryInsert($this->table, $datos);
@@ -188,6 +189,7 @@ class DynamicQuery extends DatabaseHandler {
         $this->cerrarConexion();
     }
 
+    /*Ejcuta la inserccion de estudiantes con programas un insercion transaccional */
     public function insertStudentWithProgram($data) {          
         try {
             if (isset($data['pws'])) {
@@ -229,14 +231,9 @@ class DynamicQuery extends DatabaseHandler {
         } finally {
             $this->cerrarConexion();
         }
-    }
+    }   
     
-
-  
-
-    
-    
-
+    /* Ejecuta cualquier tipo de consulta*/
     private function executeQuery($query, $types = '', $params = []) {
         list($success, $stmtOrError) = $this->prepareAndExecute($query, $types, $params);
         if ($success) {
@@ -252,10 +249,12 @@ class DynamicQuery extends DatabaseHandler {
         $this->cerrarConexion();
     }
 
+    /* Ejecuta cualquier todas las consultas */
     public function executeQuerysAll ($consulta){       
     return $this->executeQuery($consulta); 
     }
-        
+
+     /* Ejecuta los resultado de la consulta los ordena */        
     private function fetchResults($result) {
         $data = [];
         while ($row = mysqli_fetch_assoc($result)) {

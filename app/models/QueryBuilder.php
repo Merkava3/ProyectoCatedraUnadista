@@ -18,7 +18,6 @@ class QueryBuilder {
         $params = array_values($datos);
         $query = "SELECT * FROM {$table} WHERE {$column} = ?";
         return [$params, $query];
-
     }
 
     public static function QueryGetAll($table){
