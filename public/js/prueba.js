@@ -631,6 +631,7 @@ async function Sms() {
         });
 
         const result = await response.json();
+        console.log(result);
         if (result.status === '1x000') {
             console.log('Mensaje enviado a ' + number);
         } else {
@@ -657,7 +658,7 @@ async function Sms() {
 // --------------------- end usuario ----------------------------
 
 // --------------------- login usuario ----------------------------
-login();
+//login();
 // --------------------- end login usuario ----------------------
 
 
