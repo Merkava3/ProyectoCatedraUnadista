@@ -10,27 +10,24 @@ async function Acceder(event){
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
-      });
-      
-      // Asegurarse de que la respuesta se parsea como JSON
-      const result = await response.json();
-      
-              
+      });      
+     
+      const result = await response.json();  
       
       if (result.success) {
-         alert("Bienvenido");             
-          window.location.href = result.pages;
-                 
-          
+         alert("Bienvenido"); 
+         form.reset();            
+          window.location.href = result.pages;          
       } else {
-          console.log(result.message);
-          console.log('Inicio de sesión fallido. Verifique sus credenciales.');
+          alert(result.message);
+          alert('Inicio de sesión fallido. Verifique sus credenciales.');
       }
       
   } catch (error) {
       console.error('Error en la solicitud:', error);
       alert('Ocurrió un error durante el inicio de sesión.');
   }
+  
 
 }
 
