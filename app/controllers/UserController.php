@@ -35,6 +35,7 @@ class UserController {
             $message = 'Error al decodificar el JSON';
             $responseData = ['success' => $validation, 'message' => $message, 'data' => null];
         } else {
+            $data['tipo_usuario'] = "Tutor";           
             $errors = DataValidator::validateData($data);
             if (!empty($errors)) {
                 $message = 'Datos inválidos';
