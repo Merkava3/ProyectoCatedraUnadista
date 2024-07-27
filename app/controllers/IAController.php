@@ -4,7 +4,7 @@ require_once APP_PATH . '/../services/RequesteIA.php'; // Ajusta la ruta según 
 require_once 'UserController.php';
 class IAController {
     public static function ChatGpt4() {
-        UserController::verificarSesion();
+        //UserController::verificarSesion();
         header('Content-Type: application/json');
         $input = file_get_contents("php://input");
         $data = json_decode($input, true);

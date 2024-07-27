@@ -15,7 +15,8 @@ async function Registrar(event){
              });
         const result = await response.json();        
        if(result.success){
-        alert(result.message);
+        form.reset();
+        alert(result.message);       
        }else{
         let errorMessage = result.message;
             if (result.errors) {

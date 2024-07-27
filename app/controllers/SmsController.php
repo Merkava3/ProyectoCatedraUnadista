@@ -5,7 +5,7 @@ require_once 'UserController.php';
 class SmsController {
 
     public static function SendSms() {
-        UserController::verificarSesion();
+        //UserController::verificarSesion();
         header('Content-Type: application/json');
         $input = file_get_contents("php://input");
         $data = json_decode($input, true);
