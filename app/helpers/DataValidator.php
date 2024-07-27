@@ -81,7 +81,7 @@ class DataValidator {
         }     
         
         if (isset($data['pws']) && !self::validatePassword($data['pws'])) {
-            $errors['pws'] = 'Contraseña no válida';
+            $errors['pws'] = 'la password debe ser maximo 8 caracteres una Mayuscula un Numero y caracter especial';
         }
         /* 
          if (isset($data['imagen'])) {
