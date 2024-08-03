@@ -274,6 +274,14 @@ class UserController {
         exit;
     }
 
+    public static function RecoveryEmail(){
+        //self::verificarSesion();
+        self::init();
+        echo "hola mundo";
+
+
+    }
+
     private static function arrayValuesEmpty($array) {
         foreach ($array as $value) {
             if (!empty($value)) {

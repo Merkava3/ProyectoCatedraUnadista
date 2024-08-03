@@ -20,7 +20,8 @@ import {
     UrlSms,
     UrlUserLogout,
     UrlCount,
-    UrlInsertStudent
+    UrlInsertStudent,
+    UrlRecovery
 } from "./const.js";
 
 /* -------------------------------------- usuario ----------------------------- */
@@ -643,6 +644,62 @@ async function Sms() {
     }
 }
 
+async function Email(){
+
+    /*
+    
+    $rapidMailSender = new RapidMailSender();
+
+$response = $rapidMailSender->sendMail(
+    'false',
+    '<your email address>',
+    'Put Any Custom Name here',
+    'your mail where users can send reply',
+    'Testing RapidMail Api',
+    'Put your Text body here, if you want to send html just set the ishtml: true in the request body'
+
+     $postData = json_encode([
+            'ishtml' => $isHtml,
+            'sendto' => $sendTo,
+            'name' => $name,
+            'replyTo' => $replyTo,
+            'title' => $title,
+            'body' => $body
+        ]);
+);
+
+echo $response;
+    
+    
+    */
+    try {
+        const response = await fetch(UrlRecovery,{
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(
+                {
+                    ishtml: "false",
+                    sendto: "lszondas@gmail.com",
+                    name: "Put Any Custom Name here",
+                    replyTo: "your mail where users can send reply",
+                    title: "Testing RapidMail Api",
+                    body: "Put your Text body here, if you want to send html just set the ishtml: true in the request body"
+                  }
+                
+
+
+
+
+            )
+        })
+        const result = await response.text();
+        console.log(result);
+    } catch (error) {
+        console.log(error);
+        
+    }
+}
+
 
 
 
@@ -671,7 +728,7 @@ async function Sms() {
 // --------------------------- examen -------------------------
 
 //InsertQuestionData()
-//allQuestions();
+allQuestions();
 //DeleteQuestion();
 //SearchQuestion();
 //UpdateQuestions();
@@ -690,5 +747,7 @@ async function Sms() {
 //--------------------------------SMS---------------------------------------
 //Sms()
 //---------------------------- End SMS---------------------------------------
+
+//Email();
 
 

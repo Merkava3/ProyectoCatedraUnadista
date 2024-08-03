@@ -14,6 +14,7 @@ export const UrlInsertStudent = 'index.php?url=user/InsertStudent';
 export const UrlOnlineUser = 'index.php?url=user/OnlineUser';
 export const UrlTableData = 'index.php?url=user/TableData';
 
+
 // http://localhost/ProyectoCatedraUnadista/public/index.html
 /* -------------------end usuarios---------------------------- */
 
@@ -46,6 +47,12 @@ export const UrlAnswerJson = "./data/Answer.json";
 export const UrlChatGpt4IA = "index.php?url=IA/ChatGpt4";
 export const UrlSms = "index.php?url=Sms/SendSms"
 /* ------------------------------- End Reques Api ---------------------------------------*/
+
+/* --- recovery ----*/
+
+export const UrlRecovery = 'index.php?url=Recovery/email';
+
+/* --- end recovery ---*/
 
 
 

@@ -20,7 +20,7 @@ class AnswerController{
     }
 
     public static function crear() {
-        UserController::verificarSesion();
+        //UserController::verificarSesion();
         self::init();
         global $QueryExamen;
 

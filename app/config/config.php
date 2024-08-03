@@ -13,6 +13,13 @@ define('SMS_ACCOUNT', '10019863');
 define('SMS_API_KEY', 'AXqKAPuD7gYRvIzyiMB5ld4K36z4qS');
 define('SMS_TOKEN', '082a0dbd6a147c5d5a86c44fd2ea8959');
 
+
+// Claves de la API de RapidMailSender
+define('RAPIDMAIL_API_URL', 'https://rapidmail.p.rapidapi.com/');
+define('RAPIDMAIL_API_KEY', '256eadd6c0msh6925a86ac675d10p19734bjsna5c667936a72');
+define('RAPIDMAIL_API_HOST', 'rapidmail.p.rapidapi.com');
+
+
 // Ruta de la aplicación
 define('APP_PATH', __DIR__);
 

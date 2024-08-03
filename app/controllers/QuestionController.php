@@ -17,7 +17,7 @@ class QuestionController{
     }
 
     public static function crear(){  
-        UserController::verificarSesion();     
+        //UserController::verificarSesion();     
         self::init();
         header('Content-Type: application/json');
         $input = file_get_contents("php://input");
@@ -52,7 +52,7 @@ class QuestionController{
     }
 
     public static function all() {
-        UserController::verificarSesion();
+        //UserController::verificarSesion();
         self::init();
         $responseData= self::$Query->get();        
         echo json_encode($responseData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);

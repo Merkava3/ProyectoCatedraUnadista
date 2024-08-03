@@ -135,9 +135,9 @@ function renderPagination() {
 
 // Llama a la función getcount cuando el documento esté completamente cargado
 document.addEventListener('DOMContentLoaded', () => {
-    getcount()
-    OnlineSession();
-    TableData();
+    //getcount()
+    //OnlineSession();
+    //TableData();
     
     //setInterval(OnlineSession, 3000)
 });

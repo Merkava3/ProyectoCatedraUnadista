@@ -12,6 +12,8 @@ searchBtn.addEventListener("click", ()=>{ // Sidebar open when you click on the 
   menuBtnChange(); //calling the function(optional)
 });
 
+
+
 // following are the code to change sidebar button(optional)
 function menuBtnChange() {
  if(sidebar.classList.contains("open")){
@@ -21,7 +23,7 @@ function menuBtnChange() {
  }
 }
 
-async function loadContent(url) {
+async function loadContent(url, callback) {
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -30,20 +32,21 @@ async function loadContent(url) {
     const content = await response.text();
     const contentDiv = document.getElementById("content");
     contentDiv.innerHTML = content;
-    
+
+    if (callback) {
+      callback();
+    }
+
   } catch (error) {
     console.error('Error loading content:', error);
   }
 }
 
-// Carga el contenido inicial cuando el documento está completamente cargado
 document.addEventListener('DOMContentLoaded', () => loadContent('inicio.html'));
 
+document.getElementById("question-link").addEventListener("click", () => {
+  loadContent("loadQuestion.html", allQuestions);
+});
 
-
-
-
-
-
-
-
+// Importar la función allQuestions del módulo ProgrammerQuestion.js
+import { allQuestions } from './ProgrammerQuestion.js';
