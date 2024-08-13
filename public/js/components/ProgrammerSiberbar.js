@@ -1,3 +1,6 @@
+import { allQuestions, preguntasData } from './ProgrammerQuestion.js';
+
+
 let sidebar = document.querySelector(".sidebar");
 let closeBtn = document.querySelector("#btn");
 let searchBtn = document.querySelector(".bx-search");
@@ -46,7 +49,13 @@ document.addEventListener('DOMContentLoaded', () => loadContent('inicio.html'));
 
 document.getElementById("question-link").addEventListener("click", () => {
   loadContent("loadQuestion.html", allQuestions);
+  
 });
 
-// Importar la función allQuestions del módulo ProgrammerQuestion.js
-import { allQuestions } from './ProgrammerQuestion.js';
+document.getElementById("sms").addEventListener("click", () => {
+  loadContent("SendSms.html");
+})
+
+//console.log(preguntasData);
+
+

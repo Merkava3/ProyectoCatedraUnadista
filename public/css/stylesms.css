@@ -1,0 +1,17 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.BoxSms{
+    width: 100%;
+    border: 1px solid black;
+    background: white;
+}
+.containersms{
+    margin:  0 auto;
+    border: 1px solid black;
+    
+
+}

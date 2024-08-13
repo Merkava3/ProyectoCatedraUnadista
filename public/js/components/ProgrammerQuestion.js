@@ -124,9 +124,11 @@ function agregarBotones(contenedor) {
     if (!botonesDiv) {
         const addPreguntaBtn = document.createElement("button");
         addPreguntaBtn.textContent = "Agregar Pregunta";
+        addPreguntaBtn.setAttribute("class", "agregarpregunta")
         addPreguntaBtn.addEventListener("click", () => addPregunta());
 
         const guardarBtn = document.createElement("button");
+        guardarBtn.setAttribute("class", "guardar")
         guardarBtn.textContent = "Guardar";
         guardarBtn.addEventListener("click", () => {
             console.log(preguntasData);
@@ -287,4 +289,5 @@ function updateRespuestasOrder(parent, preguntaIndex) {
     });
 }
 
-export { allQuestions };
+export { allQuestions, preguntasData };
+
