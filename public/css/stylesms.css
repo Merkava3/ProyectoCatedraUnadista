@@ -3,15 +3,95 @@
     padding: 0;
     margin: 0;
 }
+h1{
+    text-align: center;
+}
 
+h3{
+    text-align: center;
+}
+.formSms{
+    display: block;
+}
 .BoxSms{
-    width: 100%;
-    border: 1px solid black;
-    background: white;
-}
-.containersms{
     margin:  0 auto;
-    border: 1px solid black;
-    
-
+    width: 100%;    
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px;
 }
+
+
+.input-container{
+    display: flex;
+  align-items: center; 
+}
+
+label {
+    margin-right: 10px;
+  }
+textarea{
+    width: 61%; /* O ajusta el ancho según sea necesario */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+    resize: vertical; /* Permite al usuario cambiar el tamaño verticalmente */
+}
+
+.btnsend{
+    margin-top: 10px ;
+    display: flex;
+   justify-content: center; 
+} 
+
+button{
+    background-color: white;
+    border: none;
+    width: 6em;
+    height: 2.6em;
+    font-family: inherit;
+    display: inline-block;    
+    line-height: 2.5em;
+    overflow: hidden;
+    cursor: pointer;
+    margin: 5px;
+    font-size: 17px;
+    z-index: 1;
+    color: #0077ff;
+    border: 2px solid  #0077ff;
+    border-radius: 6px;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+button:hover{
+    background-color:  #0077ff; 
+    color: white;   
+}
+
+button::before {
+    position: absolute;
+    content: "";
+    background: #0077ff;
+    width: 150px;
+    height: 200px;
+    z-index: -1;
+    border-radius: 50%;
+  }
+  
+  button:hover {
+    color: white;
+  }
+  
+  button:before {
+    top: 100%;
+    left: 100%;
+    transition: 0.3s all;
+  }
+  
+  button:hover::before {
+    top: -30px;
+    left: -30px;
+  }
+

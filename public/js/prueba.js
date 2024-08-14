@@ -620,18 +620,20 @@ async function ChatGptSend() {
 }
 
 async function Sms() {
-    let msg = prompt('Envia mensaje a sms: ');
     let num = prompt('Ingrese numero de telefono: ');
+    let msg = prompt('Envia mensaje a sms: ');   
     let number = '57' + num;
+    let datos = { send: msg, number: number }
+    console.log(datos);
 
     try {
         const response = await fetch(UrlSms, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ send: msg, number: number })
+            body: JSON.stringify()
         });
 
-        const result = await response.json();
+        const result = await response.text();
         console.log(result);
         if (result.status === '1x000') {
             console.log('Mensaje enviado a ' + number);
@@ -728,7 +730,7 @@ echo $response;
 // --------------------------- examen -------------------------
 
 //InsertQuestionData()
-allQuestions();
+//allQuestions();
 //DeleteQuestion();
 //SearchQuestion();
 //UpdateQuestions();
@@ -745,7 +747,7 @@ allQuestions();
 //------------------------------End IA--------------------------------------
 
 //--------------------------------SMS---------------------------------------
-//Sms()
+Sms()
 //---------------------------- End SMS---------------------------------------
 
 //Email();
