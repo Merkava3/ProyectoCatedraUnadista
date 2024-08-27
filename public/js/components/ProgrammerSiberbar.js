@@ -1,6 +1,5 @@
 import { allQuestions, preguntasData } from './ProgrammerQuestion.js';
 
-
 let sidebar = document.querySelector(".sidebar");
 let closeBtn = document.querySelector("#btn");
 let searchBtn = document.querySelector(".bx-search");
@@ -48,13 +47,14 @@ async function loadContent(url, callback) {
 document.addEventListener('DOMContentLoaded', () => loadContent('inicio.html'));
 
 document.getElementById("question-link").addEventListener("click", () => {
-  loadContent("loadQuestion.html", allQuestions);
-  
+  loadContent("loadQuestion.html", allQuestions);  
 });
 
 document.getElementById("sms").addEventListener("click", () => {
   loadContent("SendSms.html");
 })
+
+
 
 //console.log(preguntasData);
 

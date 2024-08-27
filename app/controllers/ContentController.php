@@ -68,7 +68,7 @@ public static function update() {
 
 
 public static function load(){
-    UserController::verificarSesion();
+    //UserController::verificarSesion();
     self::init();
     $name = 'id_usuario_contenido';
     header('Content-Type: application/json');

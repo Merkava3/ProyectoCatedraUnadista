@@ -356,6 +356,7 @@ async function InsertContent() {
 }
 
 async function load() {
+    alert("estamos cargado.......")
     try {
         const response = await fetch(UrlContentLoad, {
             method: 'POST',
@@ -597,7 +598,7 @@ async function InsertAnswer(data){
    }
 }
 async function ChatGptSend() {
-    let msg = prompt('Envia mensaje a chat GPT');
+    //let msg = prompt('Envia mensaje a chat GPT');
     try {
         const response = await fetch(UrlChatGpt4IA, {
             method: 'POST',
@@ -747,7 +748,7 @@ echo $response;
 //------------------------------End IA--------------------------------------
 
 //--------------------------------SMS---------------------------------------
-Sms()
+//Sms()
 //---------------------------- End SMS---------------------------------------
 
 //Email();

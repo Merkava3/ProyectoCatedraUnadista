@@ -3,18 +3,18 @@
         "nombre": "image1",
         "url": "./img/undraw_researching_re_fuod.svg",
         "name":"valor1",
-        "texto": "Lorem ipsum dolor sit amet consectetur adipiscing elit, nunc conubia nisl et convallis cubilia, elementum arcu metus venenatis quisque montes."
+        "texto": ""
     }, 
     {
         "nombre":"image2",
         "url":"./img/undraw_reading_re_29f8.svg",
         "name": "valor1",
-        "texto": "Lorem ipsum dolor sit amet consectetur adipiscing elit, nunc conubia nisl et convallis cubilia, elementum arcu metus venenatis quisque montes."
+        "texto": ""
     },
     {
         "nombre":"image3",
         "url":"./img/undraw_teacher_re_sico.svg",
         "name":"valor1",
-        "texto":"Lorem ipsum dolor sit amet consectetur adipiscing elit, nunc conubia nisl et convallis cubilia, elementum arcu metus venenatis quisque montes."
+        "texto":""
     }
 ]
