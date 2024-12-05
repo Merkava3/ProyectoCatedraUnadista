@@ -1,0 +1,59 @@
+/* Importación de la fuente Montserrat desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Estilos generales */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    background: #00F260;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #0575E6, #00F260);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #0575E6, #00F260); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    height: 100vh; /* Asegúrate de que el body cubra toda la altura de la pantalla */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+h3{
+    text-align: center;
+    margin: 5px 0px 10px 0px ;
+    
+}
+
+.conteiner {
+    border: 1px solid #F7F9F9; 
+    background: white;  
+    width: 40%;
+    max-width: 500px; /* Establece un ancho máximo para evitar que sea demasiado ancho en pantallas grandes */
+    padding: 20px;    
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+
+.Recovery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;     
+}
+input[type="email"]{
+    font-size: 16px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #0575E6; /* Color del botón */
+    color: white; /* Color del texto del botón */
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #045cb5; /* Color del botón al pasar el ratón por encima */
+}

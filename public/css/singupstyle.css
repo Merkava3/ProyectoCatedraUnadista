@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family: "Montserrat", sans-serif;
+    background: #00F260;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #0575E6, #00F260);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #0575E6, #00F260); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.containter-signup{
+    background: #fff;
+    max-width: 350px;
+    width: 100%;
+    padding: 35px 34px;
+    border-radius: 10px;
+    margin: 3em auto;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+
+input[type="text"], 
+input[type="password"],
+input[type="email"]{
+    width: 100%;    
+    margin: 7px 0;
+    border-radius: 5px;
+    padding: 8px 17px;     
+    border: 1px solid#CACACA;
+    font-size: 14px;
+    font-weight: 400;
+    outline: none;
+    transition: border-bottom-width 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+    border-bottom: 2px solid dodgerblue;
+}
+.label_select{
+    font-size: 15px;
+    color: #777777;
+}
+.selected{
+    padding: 2px; 
+    background: white;
+    border: 1px solid #CACACA;
+    border-radius: 5px ;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    margin: 7px 0px;
+}
+option{
+    font-size: 15px;
+}
+input[type="file"]{
+    margin: 40px 0px;
+    width: 25em;
+    border: 1px solid black;
+
+}
+
+.file-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;   
+    cursor: pointer;   
+}
+
+.file-label {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: dodgerblue;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.file-name {
+    margin-left: 10px;
+    font-size: 14px;
+    color: #555;
+}
+button{    
+    margin: 20px 0px 0px 77px;
+    padding: 10px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+    background: dodgerblue;
+    color: white;
+    border: none;
+    transition: background 0.3s ease;
+    border-radius: 4px;
+}
+
+button:hover {
+    cursor: pointer;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(30,144,255,1) 0%, rgba(0,212,255,1) 100%);
+}
+
+
+

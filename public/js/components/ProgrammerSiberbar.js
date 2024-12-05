@@ -1,3 +1,5 @@
+import { allQuestions, preguntasData } from './ProgrammerQuestion.js';
+
 let sidebar = document.querySelector(".sidebar");
 let closeBtn = document.querySelector("#btn");
 let searchBtn = document.querySelector(".bx-search");
@@ -12,6 +14,8 @@ searchBtn.addEventListener("click", ()=>{ // Sidebar open when you click on the 
   menuBtnChange(); //calling the function(optional)
 });
 
+
+
 // following are the code to change sidebar button(optional)
 function menuBtnChange() {
  if(sidebar.classList.contains("open")){
@@ -21,11 +25,37 @@ function menuBtnChange() {
  }
 }
 
-function loadContent(page) {
-  fetch(page)
-    .then(response => response.text())
-    .then(content => {
-      document.getElementById("content").innerHTML = content;
-    })
-    .catch(error => console.error('Error al cargar el contenido:', error));
+async function loadContent(url, callback) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const content = await response.text();
+    const contentDiv = document.getElementById("content");
+    contentDiv.innerHTML = content;
+
+    if (callback) {
+      callback();
+    }
+
+  } catch (error) {
+    console.error('Error loading content:', error);
+  }
 }
+
+document.addEventListener('DOMContentLoaded', () => loadContent('inicio.html'));
+
+document.getElementById("question-link").addEventListener("click", () => {
+  loadContent("loadQuestion.html", allQuestions);  
+});
+
+document.getElementById("sms").addEventListener("click", () => {
+  loadContent("SendSms.html");
+})
+
+
+
+//console.log(preguntasData);
+
+

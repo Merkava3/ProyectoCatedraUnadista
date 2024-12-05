@@ -24,6 +24,18 @@ class DataValidator {
         return is_numeric($number);
     }
 
+    public static function validateNumbedigit10($numero) {
+        // Verifica que el número tenga exactamente 10 dígitos y que el tercer dígito sea 3
+       
+    if (preg_match('/^573\d{9}$/', $numero)) {            
+        return true; // El número es válido
+    } else {
+        
+        return false; // El número no es válido
+    }
+    
+    }
+
     // Validar imagen (tipo y tamaño)    
     public static function validateImage($file) {
         $maxSize = 10 * 1024 * 1024; // 10 MB
@@ -42,6 +54,8 @@ class DataValidator {
 
 
     // Validar contraseña con los requisitos específicos
+    //self::verificarSesion();
+        //https://code.tutsplus.com/es/how-to-build-a-simple-rest-api-in-php--cms-37000t
     public static function validatePassword($password) {
         // 8 caracteres, al menos 1 mayúscula, 1 minúscula, 1 carácter especial, 1 número
         $pattern = '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/';
@@ -79,8 +93,10 @@ class DataValidator {
         }     
         
         if (isset($data['pws']) && !self::validatePassword($data['pws'])) {
-            $errors['pws'] = 'Contraseña no válida';
+            $errors['pws'] = 'la password debe ser maximo 8 caracteres una Mayuscula un Numero y caracter especial';
         }
+
+    
         /* 
          if (isset($data['imagen'])) {
             $imageValidationResult = self::validateImage($data['imagen']);
@@ -92,6 +108,19 @@ class DataValidator {
         
 
         return $errors;
+    }
+
+    public static function ValidateSms($data){
+        $errors = [];
+        if(isset($data['number']) && !self::validateNumbedigit10($data['number'])){
+            $errors['number'] = 'numero invalido';
+        }
+        if(isset($data['send']) && !self::validateString($data['send'])){
+            $errors['send'] = 'Solo letras';
+
+        }
+        return $errors;
+        
     }
 
 }

@@ -1,5 +1,5 @@
 <?php
-namespace Models;
+namespace models;
 
 require_once __DIR__ . '/../config/config.php';
 
