@@ -10,12 +10,13 @@
     <header>
 <div class="containter-login">
     <h1>Login</h1>
-    <form id ="form" action="../../app/controllers/MainController.php" class="form-data" onsubmit="return Accerder()">
-        <input type="text" placeholder="Enter Username" name="uname" required/>
-        <input type="password" placeholder="Enter Password" name="psw" required/>
+    <form id ="form" class="form-data" onsubmit="return Acceder(event)">
+        <!----- colocar los required en los input --->
+        <input type="text" placeholder="Enter Username" name="correo"/>
+        <input type="password" placeholder="Enter Password" name="pws"/>
         <div class="link">
         <a href="#" >Has olvidado tu contraseña?</a>
-        <a href="#">Registrase</a>
+        <a href="RegistrarseTutor.html">Registrase</a>
     </div>   
         <button type="submit" class="btn" >
            Acceder
@@ -39,6 +40,6 @@
 </div>
 
     </header>
-    <script src="../js/login.js"></script>
+    <script  type="module" src="../js/login.js"></script>
 </body>
 </html>

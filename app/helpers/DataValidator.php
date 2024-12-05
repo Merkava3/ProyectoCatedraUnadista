@@ -42,6 +42,8 @@ class DataValidator {
 
 
     // Validar contraseña con los requisitos específicos
+    //self::verificarSesion();
+        //https://code.tutsplus.com/es/how-to-build-a-simple-rest-api-in-php--cms-37000t
     public static function validatePassword($password) {
         // 8 caracteres, al menos 1 mayúscula, 1 minúscula, 1 carácter especial, 1 número
         $pattern = '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[\W_]).{8,}$/';
@@ -79,7 +81,7 @@ class DataValidator {
         }     
         
         if (isset($data['pws']) && !self::validatePassword($data['pws'])) {
-            $errors['pws'] = 'Contraseña no válida';
+            $errors['pws'] = 'la password debe ser maximo 8 caracteres una Mayuscula un Numero y caracter especial';
         }
         /* 
          if (isset($data['imagen'])) {

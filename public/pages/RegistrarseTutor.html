@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="../css/singupstyle.css">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div class="containter-signup">
+        <h2>Registro Docente</h2>
+        <form id ="form" onsubmit="return Registrar(event)">
+            <input type="text" name="indentificacion" id="indentificacion" placeholder="ingrese Identificacion">
+            <input type="text" name="nombre" id="nombre" placeholder="Ingrese Nombre">
+            <input type="text" name="apellido" id="apellido" placeholder="Ingrese Apellido">
+            <input type="email" name="correo" id="correo" placeholder="Ingrese Correo">
+            <input type="password" name="pws" id="pws" placeholder="crea contraseña">
+            <label class="label_select" for="genero"> Genero: </label>
+            <select class="selected" id="genero">
+                <option value="masculino">Masculino</option>
+                <option value="femenino">Femenino</option>
+                <option value="Nou">Es mejor no decirlo</option>
+            </select>
+            <!-- 
+            <div class="file-input-container">
+                <input type="file" name="file" id="file">
+                <label for="file" class="file-label">Selecciona archivo</label>
+                <span id="file-name" class="file-name">No se ha seleccionado ningún archivo</span>
+            </div>
+            -->
+                 
+            <button type="submit"> Registrarse </button>        
+        </form>
+    </div>
+
+    <script type="module" src="../js/registrarse.js"></script>
+   
+</body>
+</html>
